@@ -20,12 +20,6 @@ def stapelerstellen():
     #print(stapelanzahl)
 stapelerstellen()
 
-#Variablen
-width = 1900
-height = 980
-y0 = height-150
-y1 = y0+250
-
 # Ereignisbehandlung
 def aufnehmen(event):
     global stapelanzahl, hand
@@ -40,7 +34,7 @@ def aufnehmen(event):
     ordnen()
 
 def ordnen():
-    #alte Karten müssen vorher gelöscht werden
+    #canvascards.destroy()
     global x0, y0, x1, y1
     index = width / (len(hand)) 
     x0 = (index/2)-75
@@ -48,21 +42,33 @@ def ordnen():
     for i in range(len(hand)):
         #print(index)
         rectangle = f"id_Karte{i}"
-        canvas.create_rectangle(x0, y0, x1, y1, fill=hand[i][0]) #hand[i][1]]
+        canvascards.create_rectangle(x0, y0, x1, y1, fill=hand[i][0]) #hand[i][1]]
         x0 += index
         x1 = x0 + 150
 
 def legen1(event):
-    canvas.coords("id_Karte1", (550, 100, 700, 350)) #funktioniert  nicht
+    canvascards.coords("id_Karte1", (550, 100, 700, 350)) #funktioniert  nicht
 
 # Erzeugung des Fensters
 tkFenster = Tk()
 tkFenster.title("Leinwand")
-tkFenster.geometry(f"{width}x{height}")
+tkFenster.attributes("-fullscreen", True)
+
+width = tkFenster.winfo_screenwidth()
+height = tkFenster.winfo_screenheight()
+#tkFenster.update()
+print(width)
+print(height)
+
+#Variablen
+y0 = height-150
+y1 = y0+250
 
 # Zeichenleinwand
-canvas = Canvas(master=tkFenster, background="brown")
-canvas.place(width=width, height=height)
+canvas = Canvas(master=tkFenster, background="gray")
+canvas.place(width=width, height=height-150)
+canvascards = Canvas(master=tkFenster, background="black")
+canvas.place(y=height-150, width=width, height=150)
 # Grafikobjekte
 id_karte = canvas.create_rectangle(550, 100, 700, 350, fill="black") #x0, y0, x1, y1
 id_stapel = canvas.create_rectangle(350, 100, 500, 350, fill="black") #x0, y0, x1, y1
