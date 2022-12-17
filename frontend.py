@@ -45,8 +45,9 @@ def  ordnen():
     x1 = x0 + 150
     for i in range(len(hand)):
         #print(index)
-        rectangle = f"id_Karte{i}"
-        canvascards.create_rectangle(x0, y0, x1, y1, fill=hand[i][0]) #hand[i][1]]
+        #rectangle = f"id_Karte{i}"
+        #canvascards.create_text(x1, y1, text="Label text",fill="blue", font=('Helvetica 15 bold')) # bg //Hintergrund?
+        canvascards.create_rectangle(x0, y0, x1, y1, fill=hand[i][0]) #hand[i][1] 
         x0 += index
         x1 = x0 + 150
 
