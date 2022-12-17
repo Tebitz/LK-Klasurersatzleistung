@@ -37,13 +37,8 @@ def aufnehmen(event):
     #print(hand)
     ordnen()
 
-def neucanvascards():
-    canvascards.destroy()
-    canvascards = Canvas(master=tkFenster, background="black")
-    canvascards.place(y=height-250, width=width, height=250)
-
 def  ordnen():
-    #neucanvascards()
+    canvascards.delete("all")
     global x0, y0, x1, y1
     index = width / (len(hand)) 
     x0 = (index/2)-75
