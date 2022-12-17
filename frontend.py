@@ -27,15 +27,18 @@ stapelerstellen()
 # Ereignisbehandlung
 def aufnehmen(event):
     global stapelanzahl, hand
-    random = randint(0, stapelanzahl)
-    #print(random)
-    hand = hand + [stapel[random]]
-    stapel.pop(random)
-    stapelanzahl -= 1
-    #print(stapel)
-    #print(stapelanzahl)
-    #print(hand)
-    ordnen()
+    if stapelanzahl == 0:
+        print("keine Karten mehr auf dem Stapel")
+    if stapelanzahl != 0:
+        random = randint(0, stapelanzahl-1)
+        print(f"die {random}. Karte wird aufgenommen")
+        hand = hand + [stapel[random]]
+        stapel.pop(random)
+        stapelanzahl -= 1
+        print(f"Auf der Hand sind jetzt: {hand}")
+        print(f"Auf dem Stapel: {stapel}")
+        print(f"Das sind {stapelanzahl} Karten")
+        ordnen()
 
 def  ordnen():
     canvascards.delete("all")
