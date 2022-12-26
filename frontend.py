@@ -52,14 +52,14 @@ def aufnehmen(event):
 def ordnen():
     print("Karten werden neu gerordnet")
     canvascards.delete("all") #Canvas wird gelehrt
-    global x0, y0, x1, y1
+    global x0, x1
     index = width / (len(hand)) 
     x0 = (index/2)-75
     x1 = x0 + 150 #Abstände werden neu berechnet
     for i in range(len(hand)): #Karten werden plaziert
         #rectangle = f"id_Karte{i}"
-        #canvascards.create_text(x1, y1, text=hand[i][1], fill="blue", font=('Helvetica 15 bold')) # bg //Hintergrund?
-        canvascards.create_rectangle(x0, 0, x1, 250, fill=hand[i][0]) #hand[i][1] 
+        canvascards.create_rectangle(x0, 0, x1, 250, fill=hand[i][0]) #Hintergrund der Karte
+        canvascards.create_text(x0+75, 125, font=("Arial", 100), text=hand[i][1], fill="black") #Vordergrund der Karte
         x0 += index
         x1 = x0 + 150
 
@@ -70,7 +70,9 @@ def erstekarte(): #eine erste Karte muss als Grundlage gelegt werden
     gelegt = [stapel[random]] 
     stapel.pop(random)
     stapelanzahl -= 1
-    id_karteoben = canvas.create_rectangle(550, 100, 700, 350, fill=gelegt[0][0]) #gelegt[0][1] #x0, y0, x1, y1
+    temp = width/2
+    canvas.create_rectangle(temp-75, 300, temp+75, 550, fill=gelegt[0][0]) #Hintergrund der Karte wird plaziert
+    canvas.create_text(temp, 425, font=("Arial", 100), text=gelegt[0][1], fill="black") #Vordergrund der Karte wird plaziert
     ##print(f"die {random}. Karte wurde ausgewählt")
     ##print(f"gelegt wurde: {gelegt}")
     ##print(f"Auf dem Stapel: {stapel}")
@@ -82,7 +84,33 @@ def legen1(event): #Bedingung fehlt
     global gelegt, hand
     gelegt = [hand[0]] + gelegt #Karte vorne in Liste rein
     hand.pop(0) #Karte aus anderer Liste gelöscht
-    id_karteoben = canvas.create_rectangle(550, 100, 700, 350, fill=gelegt[0][0]) #gelegt[0][1] #x0, y0, x1, y1 #Karte wird plaziert
+    temp = width/2
+    canvas.create_rectangle(temp-75, 300, temp+75, 550, fill=gelegt[0][0]) #Hintergrund der Karte wird plaziert
+    canvas.create_text(temp, 425, font=("Arial", 100), text=gelegt[0][1], fill="black") #Vordergrund der Karte wird plaziert
+    ##print(f"die Karte {hand[0]} wurde gelegt")
+    ##print(f"gelegt wurden jetzt: {gelegt}")
+    ordnen()
+
+def legen2(event): #Bedingung fehlt
+    print("eine Karte wird gelegt")
+    global gelegt, hand
+    gelegt = [hand[1]] + gelegt #Karte vorne in Liste rein
+    hand.pop(1) #Karte aus anderer Liste gelöscht
+    temp = width/2
+    canvas.create_rectangle(temp-75, 300, temp+75, 550, fill=gelegt[0][0]) #Hintergrund der Karte wird plaziert
+    canvas.create_text(temp, 425, font=("Arial", 100), text=gelegt[0][1], fill="black") #Vordergrund der Karte wird plaziert
+    ##print(f"die Karte {hand[0]} wurde gelegt")
+    ##print(f"gelegt wurden jetzt: {gelegt}")
+    ordnen()
+
+def legen3(event): #Bedingung fehlt
+    print("eine Karte wird gelegt")
+    global gelegt, hand
+    gelegt = [hand[2]] + gelegt #Karte vorne in Liste rein
+    hand.pop(2) #Karte aus anderer Liste gelöscht
+    temp = width/2
+    canvas.create_rectangle(temp-75, 300, temp+75, 550, fill=gelegt[0][0]) #Hintergrund der Karte wird plaziert
+    canvas.create_text(temp, 425, font=("Arial", 100), text=gelegt[0][1], fill="black") #Vordergrund der Karte wird plaziert
     ##print(f"die Karte {hand[0]} wurde gelegt")
     ##print(f"gelegt wurden jetzt: {gelegt}")
     ordnen()
@@ -103,11 +131,14 @@ canvas.place(width=width, height=height-250)
 canvascards = Canvas(master=tkFenster, background="black")
 canvascards.place(y=height-250, width=width, height=250)
 # Grafikobjekte
-id_stapel = canvas.create_rectangle(350, 100, 500, 350, fill="black") #x0, y0, x1, y1 #text='aufnehmen'
+id_stapel = canvas.create_rectangle((width/2)+150, 300, (width/2)+300, 550, fill="black") #
+id_aufnehmen = canvas.create_text((width/2)+225, 425, font=("Arial", 20), text='aufnehmen', fill="white") 
 erstekarte()
 # Schaltfaechen
 tkFenster.bind('<KeyPress- >', aufnehmen)
 tkFenster.bind('<KeyPress-1>', legen1)
+tkFenster.bind('<KeyPress-2>', legen2)
+tkFenster.bind('<KeyPress-3>', legen3)
 
 # Aktivierung der Ereignisschleife
 tkFenster.mainloop()
