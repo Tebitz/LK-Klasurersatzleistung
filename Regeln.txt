@@ -1,3 +1,5 @@
++2 und +4?
+
 +4 auf +4?
 +2 auf +4?
 Doppelte Legen?
@@ -8,5 +10,11 @@ nach aufnehmen nochmal legen?
 Welche Karten gibt es? 0-7?
 gibt es + Karten überhaupt
 
+auswahl wie viele Karten am Anfang
+Wie viele Bots?
+
+darkmode?
 
 schwierigkeit???
+
+Lokaler MP?
