@@ -4,12 +4,12 @@ from random import randint
 #Listen
 farben = ["yellow", "blue", "red", "green"]
 zahlen = [0, 1, 2, 3, 4, 5, 6, 7]
-hand1 = []
+hand1 = [] #variabel?
 hand2 = []
 hand3 = []
 hand4 = []
-gelegt = []
-stapel = []
+gelegt = [] #ablagestapel
+stapel = [] #nachziehstapel
 #Variblen
 spieler = 1
 kartenaufnehmen = 5
@@ -18,12 +18,13 @@ kartenaufnehmen = 5
 def stapelerstellen():
     print("Stapel wird erstellt")
     global stapel, stapelanzahl
-    stapelanzahl = 0
+    stapelanzahl = 0 ############stattdessen len(stapel)
     for i in range(len(farben)):
         for y in range(len(zahlen)):
-            stapel = stapel + [[farben[i], zahlen[y]]] + [[farben[i], zahlen[y]]] #erstellt jede mögliche Karte 2mal
+            stapel = stapel + [[farben[i], zahlen[y]]] + [[farben[i], zahlen[y]]] #erstellt jede mögliche Karte 2mal #einstellung für karte nur einmal
             stapelanzahl += 2 #Stapelanzahl wird mitgezählt
-    ##print(f"Auf dem Stapel: {stapel}")
+    #######plus karten#####
+    print(f"Auf dem Stapel: {stapel}")
     ##print(f"Das sind {stapelanzahl} Karten")
 stapelerstellen()
 
@@ -31,7 +32,7 @@ def erstekarte(): #eine erste Karte muss als Grundlage gelegt werden
     print("Spielfeld wird vorbereitet")
     canvas.delete("all")
     global stapelanzahl, stapel, gelegt
-    random = randint(0, stapelanzahl-1)
+    random = randint(0, len(stapel)-1)#??? muss -1?
     gelegt = [stapel[random]] 
     stapel.pop(random)
     stapelanzahl -= 1
@@ -46,10 +47,16 @@ def erstekarte(): #eine erste Karte muss als Grundlage gelegt werden
 
 def haende():
     print("Karten werden aufgenommen")
-    #for in in spieler:
     karten = 0
     while karten < kartenaufnehmen:
-        aufnehmen1()
+        if spieler > 0:
+            aufnehmen1()
+        #if spieler > 1:
+            #aufnehmen2()
+        #if spieler > 2:
+            #aufnehmen3()
+        #if spieler > 3:
+            #aufnehmen4()
         karten += 1
 
 def aufnehmen1e(event):
@@ -72,7 +79,7 @@ def aufnehmen1():
     ordnen()
 
 #Wenn der Stapel leer ist werden die bereits gelegten karten wieder untergemischt
-def stapelerneuern(): #funktioniert nicht
+def stapelerneuern(): #funktioniert nicht???
     print("Stapel wird erneuert")
     global stapelanzahl, stapel, gelegt 
     stapelanzahl += len(gelegt)-1
@@ -110,7 +117,7 @@ def legen(karte): #Karte ab 0 (Index)
         gelegt = [hand1[karte]] + gelegt #Karte vorne in Liste rein
         hand1.pop(karte) #Karte aus anderer Liste gelöscht
         temp = width/2
-        canvas.create_rectangle(temp-75, 300, temp+75, 550, fill=gelegt[0][0]) #Hintergrund der Karte wird plaziert
+        canvas.create_rectangle(temp-75, 300, temp+75, 550, fill=gelegt[0][0]) #Hintergrund der Karte wird plaziert ###########bischen random Position für optische illusion wie Stapel
         canvas.create_text(temp, 425, font=("Arial", 100), text=gelegt[0][1], fill="black") #Vordergrund der Karte wird plaziert
         ##print(f"die Karte {hand[0]} wurde gelegt")
         ##print(f"gelegt wurden jetzt: {gelegt}")
@@ -150,9 +157,9 @@ canvas.place(width=width, height=height-250)
 canvascards = Canvas(master=tkFenster, background="black")
 canvascards.place(y=height-250, width=width, height=250)
 # Grafikobjekte
-id_stapel = canvas.create_rectangle((width/2)+150, 300, (width/2)+300, 550, fill="black") #
-id_aufnehmen = canvas.create_text((width/2)+225, 425, font=("Arial", 20), text='aufnehmen', fill="white") 
 erstekarte()
+id_nachziehstapel = canvas.create_rectangle((3*width/4)-75, 300, (3*width/4)+75, 550, fill="black") #
+id_aufnehmen = canvas.create_text(3*width/4, 425, font=("Arial", 20), text='aufnehmen', fill="white") #master?
 haende()
 # Schaltfaechen
 tkFenster.bind('<KeyPress- >', aufnehmen1e)
