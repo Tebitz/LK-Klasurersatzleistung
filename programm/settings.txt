@@ -1,0 +1,6 @@
+number_of_bots      5
+number_of_cards     12
+screenwidth         1501
+screenheight        1500
+primary_color       red
+secondary_color     darkgreen
