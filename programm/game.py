@@ -11,7 +11,7 @@ hand4 = []
 ablagestapel = []
 nachziehstapel = []
 #Variblen
-spieler = 1
+spieler = 4
 kartenaufnehmen = 5
 
 def game(): #Funktion die das Menu aufruft
@@ -34,8 +34,8 @@ def game(): #Funktion die das Menu aufruft
         ablagestapel = [nachziehstapel[random]] 
         nachziehstapel.pop(random)
         temp = width/2
-        canvas.create_rectangle(temp-75, 300, temp+75, 550, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert
-        canvas.create_text(temp, 425, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert
+        canvas.create_rectangle(temp-75, (height/2)-125, temp+75, (height/2)+125, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert
+        canvas.create_text(temp, height/2, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert
         ##print(f"die {random}. Karte wurde ausgewählt")
         ##print(f"gelegt wurde: {ablagestapel}")
         ##print(f"Auf dem Stapel: {nachziehstapel}") 
@@ -43,15 +43,24 @@ def game(): #Funktion die das Menu aufruft
 
     def haende():
         print("Karten werden aufgenommen")
-        karten = 0
-        while karten < kartenaufnehmen:
+        for i in range(kartenaufnehmen):
             aufnehmen(1)
             aufnehmen(2)
             aufnehmen(3)
             aufnehmen(4)
-            karten += 1
+        if spieler > 1:
+            labelBot1 = Label(master=tkFenster, text="Bot1:\n0", bg='black', font=('Arial', 36), fg="white")
+            labelBot1.place(x=10, y=(height/2)-125, width=150, height=250)
+        if spieler > 2:
+            labelBot2 = Label(master=tkFenster, text="Bot2:\n0", bg='black', font=('Arial', 36), fg="white")
+            labelBot2.place(x=(width/2)-75, y=10, width=150, height=250)
+        if spieler > 3:
+            labelBot3 = Label(master=tkFenster, text="Bot3:\n0", bg='black', font=('Arial', 36), fg="white")
+            labelBot3.place(x=width-165, y=(height/2)-125, width=150, height=250)
 
-    def aufnehmen1(event):
+    def aufnehmen1e(event):
+        aufnehmen(1) #für hand 1
+    def aufnehmen1():
         aufnehmen(1) #für hand 1
 
     def aufnehmen(hand):
@@ -114,11 +123,11 @@ def game(): #Funktion die das Menu aufruft
             ablagestapel = [hand1[karte]] + ablagestapel #Karte vorne in Liste rein
             hand1.pop(karte) #Karte aus anderer Liste gelöscht
             temp = width/2
-            canvas.create_rectangle(temp-75, 300, temp+75, 550, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert ###########bischen random Position für optische illusion wie Stapel
-            canvas.create_text(temp, 425, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert
+            canvas.create_rectangle(temp-75, (height/2)-125, temp+75, (height/2)+125, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert
+            canvas.create_text(temp, height/2, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert
             ##print(f"gelegt wurden jetzt: {ablagestapel}")
             ordnen()
-            zugbot()
+            tkFenster.after(2000, zugbot1)
         else: print(f"sie konnte nicht gelegt werden")
 
     def ordnen():
@@ -126,56 +135,69 @@ def game(): #Funktion die das Menu aufruft
             print("gewonnen")
             return
         print("Karten werden neu gerordnet")
-        canvascards.delete("all") #Canvas wird gelehrt
-        global x0, x1
+        #framedeck.destroy
+        framedeck = Frame(master=tkFenster, background="gray")
+        framedeck.place(y=height-250, width=width, height=250)
+        #canvascards.delete("all") #Canvas wird gelehrt
         index = width / (len(hand1)) 
         x0 = (index/2)-75
-        x1 = x0 + 150 #Abstände werden neu berechnet
+        #x1 = x0 + 150 #Abstände werden neu berechnet
         for i in range(len(hand1)): #Karten werden plaziert
-            #rectangle = f"id_Karte{i}"
+            #command = f"legen({i})"
+            button_Karten = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(i))
+            button_Karten.place(x=x0, y=0, width=150, height=250)
+            """
             canvascards.create_rectangle(x0, 0, x1, 250, fill=hand1[i][0]) #Hintergrund der Karte
             canvascards.create_text(x0+75, 125, font=("Arial", 100), text=hand1[i][1], fill="black") #Vordergrund der Karte
+            """
             x0 += index
-            x1 = x0 + 150
+            #x1 = x0 + 150
 
-    def zugbot():
-        print("die Bots spielen!")
+    def zugbot1():
         global ablagestapel, hand2, hand3, hand4
         if spieler > 1:
             print("Bots 1 ist dran")
-            for i in len(hand2):
+            for i in range(len(hand2)):
                 print(f"die {i}. Karte soll gelegt werden: {hand2[i]}")
                 if ablagestapel[0][0] == hand2[i][0] or ablagestapel[0][1] == hand2[i][1]:
                     ablagestapel = [hand2[i]] + ablagestapel #Karte vorne in Liste rein
                     hand2.pop(i) #Karte aus anderer Liste gelöscht
                     temp = width/2
-                    canvas.create_rectangle(temp-75, 300, temp+75, 550, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert ###########bischen random Position für optische illusion wie Stapel
-                    canvas.create_text(temp, 425, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert
+                    canvas.create_rectangle(temp-75, (height/2)-125, temp+75, (height/2)+125, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert
+                    canvas.create_text(temp, height/2, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert
                     ##print(f"gelegt wurden jetzt: {ablagestapel}")
-                break
+                    break
         if spieler > 2:
-            print("Bots 2 ist dran")
-            for i in len(hand3):
-                print(f"die {i}. Karte wurde gelegt: {hand3[i]}")
-                if ablagestapel[0][0] == hand3[i][0] or ablagestapel[0][1] == hand3[i][1]:
-                    ablagestapel = [hand3[i]] + ablagestapel #Karte vorne in Liste rein
-                    hand3.pop(i) #Karte aus anderer Liste gelöscht
-                    temp = width/2
-                    canvas.create_rectangle(temp-75, 300, temp+75, 550, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert ###########bischen random Position für optische illusion wie Stapel
-                    canvas.create_text(temp, 425, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert
-                    ##print(f"gelegt wurden jetzt: {ablagestapel}")
+            tkFenster.after(1000, zugbot2)
+
+    def zugbot2():
+        print("Bots 2 ist dran")
+        global ablagestapel, hand2, hand3, hand4
+        for i in range(len(hand3)):
+            print(f"die {i}. Karte wurde gelegt: {hand3[i]}")
+            if ablagestapel[0][0] == hand3[i][0] or ablagestapel[0][1] == hand3[i][1]:
+                ablagestapel = [hand3[i]] + ablagestapel #Karte vorne in Liste rein
+                hand3.pop(i) #Karte aus anderer Liste gelöscht
+                temp = width/2
+                canvas.create_rectangle(temp-75, (height/2)-125, temp+75, (height/2)+125, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert
+                canvas.create_text(temp, height/2, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert
+                ##print(f"gelegt wurden jetzt: {ablagestapel}")
                 break
         if spieler > 3:
-            print("Bots 3 ist dran")
-            for i in len(hand4):
-                print(f"die {i}. Karte wurde gelegt: {hand4[i]}")
-                if ablagestapel[0][0] == hand4[i][0] or ablagestapel[0][1] == hand4[i][1]:
-                    ablagestapel = [hand4[i]] + ablagestapel #Karte vorne in Liste rein
-                    hand4.pop(i) #Karte aus anderer Liste gelöscht
-                    temp = width/2
-                    canvas.create_rectangle(temp-75, 300, temp+75, 550, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert ###########bischen random Position für optische illusion wie Stapel
-                    canvas.create_text(temp, 425, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert
-                    ##print(f"gelegt wurden jetzt: {ablagestapel}")
+            tkFenster.after(1000, zugbot3)
+
+    def zugbot3():
+        print("Bots 3 ist dran")
+        global ablagestapel, hand2, hand3, hand4
+        for i in range(len(hand4)):
+            print(f"die {i}. Karte wurde gelegt: {hand4[i]}")
+            if ablagestapel[0][0] == hand4[i][0] or ablagestapel[0][1] == hand4[i][1]:
+                ablagestapel = [hand4[i]] + ablagestapel #Karte vorne in Liste rein
+                hand4.pop(i) #Karte aus anderer Liste gelöscht
+                temp = width/2
+                canvas.create_rectangle(temp-75, (height/2)-125, temp+75, (height/2)+125, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert
+                canvas.create_text(temp, height/2, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert
+                ##print(f"gelegt wurden jetzt: {ablagestapel}")
                 break
     
     stapelerstellen()
@@ -192,17 +214,19 @@ def game(): #Funktion die das Menu aufruft
     # Zeichenleinwand
     canvas = Canvas(master=tkFenster, background="gray")
     canvas.place(width=width, height=height-250)
-    canvascards = Canvas(master=tkFenster, background="gray")
-    canvascards.place(y=height-250, width=width, height=250)
+    framedeck = Frame(master=tkFenster, background="gray")
+    framedeck.place(y=height-250, width=width, height=250)
+    #canvascards = Canvas(master=tkFenster, background="gray")
+    #canvascards.place(y=height-250, width=width, height=250)
     button_quit = Button(master=tkFenster, text="X", bg="red", font=("Arial", 35), command=quit)#close button
-    button_quit.place(x=25, y=25, width=50, height=50)
+    button_quit.place(x=width-75, y=25, width=50, height=50)
     # Grafikobjekte
     erstekarte()
-    id_nachziehstapel = canvas.create_rectangle((3*width/4)-75, 300, (3*width/4)+75, 550, fill="black") #
-    id_aufnehmen = canvas.create_text(3*width/4, 425, font=("Arial", 20), text='aufnehmen', fill="white") #master?
+    button_aufnehmen = Button(master=tkFenster, text="aufnehmen", bg="black", font=("Arial", 20), fg="white", command=aufnehmen1)
+    button_aufnehmen.place(x=(2*width/3)-75, y=(height/2)-125, width=150, height=250)
     haende()
     # Schaltfaechen
-    tkFenster.bind('<KeyPress- >', aufnehmen1)
+    tkFenster.bind('<KeyPress- >', aufnehmen1e)
     tkFenster.bind('<KeyPress-1>', legen1)
     tkFenster.bind('<KeyPress-2>', legen2)
     tkFenster.bind('<KeyPress-3>', legen3)
