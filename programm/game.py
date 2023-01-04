@@ -14,7 +14,8 @@ nachziehstapel = []
 spieler = 1
 kartenaufnehmen = 5
 
-def game():
+def game(): #Funktion die das Menu aufruft
+
     #stapel automatisch erstellen
     def stapelerstellen():
         print("Stapel wird erstellt")
@@ -138,10 +139,12 @@ def game():
             x1 = x0 + 150
 
     def zugbot():
+        print("die Bots spielen!")
         global ablagestapel, hand2, hand3, hand4
         if spieler > 1:
+            print("Bots 1 ist dran")
             for i in len(hand2):
-                print(f"die {i}. Karte wurde gelegt: {hand2[i]}")
+                print(f"die {i}. Karte soll gelegt werden: {hand2[i]}")
                 if ablagestapel[0][0] == hand2[i][0] or ablagestapel[0][1] == hand2[i][1]:
                     ablagestapel = [hand2[i]] + ablagestapel #Karte vorne in Liste rein
                     hand2.pop(i) #Karte aus anderer Liste gelöscht
@@ -151,6 +154,7 @@ def game():
                     ##print(f"gelegt wurden jetzt: {ablagestapel}")
                 break
         if spieler > 2:
+            print("Bots 2 ist dran")
             for i in len(hand3):
                 print(f"die {i}. Karte wurde gelegt: {hand3[i]}")
                 if ablagestapel[0][0] == hand3[i][0] or ablagestapel[0][1] == hand3[i][1]:
@@ -162,6 +166,7 @@ def game():
                     ##print(f"gelegt wurden jetzt: {ablagestapel}")
                 break
         if spieler > 3:
+            print("Bots 3 ist dran")
             for i in len(hand4):
                 print(f"die {i}. Karte wurde gelegt: {hand4[i]}")
                 if ablagestapel[0][0] == hand4[i][0] or ablagestapel[0][1] == hand4[i][1]:
@@ -177,7 +182,7 @@ def game():
     stapelerstellen()
     # Erzeugung des Fensters
     tkFenster = Tk()
-    tkFenster.title("Leinwand")
+    tkFenster.title("Letzte Karte")
     tkFenster.attributes("-fullscreen", True)
 
     width = tkFenster.winfo_screenwidth()
