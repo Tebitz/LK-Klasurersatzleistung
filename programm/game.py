@@ -177,8 +177,7 @@ def game(): #Funktion die das Menu aufruft
                     canvas.create_text(temp, 425, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert
                     ##print(f"gelegt wurden jetzt: {ablagestapel}")
                 break
-        
-
+    
     stapelerstellen()
     # Erzeugung des Fensters
     tkFenster = Tk()
@@ -195,6 +194,8 @@ def game(): #Funktion die das Menu aufruft
     canvas.place(width=width, height=height-250)
     canvascards = Canvas(master=tkFenster, background="gray")
     canvascards.place(y=height-250, width=width, height=250)
+    button_quit = Button(master=tkFenster, text="X", bg="red", font=("Arial", 35), command=quit)#close button
+    button_quit.place(x=25, y=25, width=50, height=50)
     # Grafikobjekte
     erstekarte()
     id_nachziehstapel = canvas.create_rectangle((3*width/4)-75, 300, (3*width/4)+75, 550, fill="black") #
@@ -212,6 +213,10 @@ def game(): #Funktion die das Menu aufruft
     tkFenster.bind('<KeyPress-8>', legen8)
     tkFenster.bind('<KeyPress-9>', legen9)
     tkFenster.bind('<KeyPress-0>', legen10)
+    tkFenster.bind('<KeyPress-Escape>', quit)
+    tkFenster.bind('<KeyPress-End>', quit)
+    tkFenster.bind('<KeyPress-Delete>', quit)
+    tkFenster.bind('<KeyPress-BackSpace>', quit)
 
     # Aktivierung der Ereignisschleife
     tkFenster.mainloop()
