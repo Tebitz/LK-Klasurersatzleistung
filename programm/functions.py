@@ -17,9 +17,3 @@ def textdatei(parameter, value): #parameter = was gesucht wird (number_of_cards)
     for i in range(len(data)):
         text.write(data[i] + "\n")
     text.close()
-
-#print(textdatei("font_color_1", "null"))
-    if i >= len(data):
-        print(i)
-        print(data[i])
-        print(data)
