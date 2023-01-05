@@ -1,4 +1,4 @@
-def textdatei(parameter, value): #parameter = was gesucht wird (number_of_cards), value = in was der Wert geändert werden soll, beim auslesen value = "null"
+def textdatei(parameter, value): #parameter = was gesucht wird ("number_of_cards"), value = in was der Wert geändert werden soll, beim auslesen value = "null"
     text = open("settings.txt", "r")
     data = text.read()
     text.close()
