@@ -2,5 +2,9 @@ number_of_bots      5
 number_of_cards     12
 screenwidth         1501
 screenheight        1500
-primary_color       red
+primary_color       darkblue
 secondary_color     darkgreen
+font_1              arial
+font_size_title     30
+font_size_subtitle  20
+font_color_1        black
