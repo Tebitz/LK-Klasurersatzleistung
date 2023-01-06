@@ -13,6 +13,9 @@ nachziehstapel = []
 #Variblen
 spieler = 4
 kartenaufnehmen = 5
+primary_color = "gray"
+secondary_color = "black"
+font_color_1 = "white"
 
 def game(): #Funktion die das Menu aufruft
 
@@ -42,6 +45,7 @@ def game(): #Funktion die das Menu aufruft
         #Random Karte wird plaziert
 
     def haende():
+        global labelBot1, labelBot2, labelBot3
         print("Karten werden aufgenommen")
         for i in range(kartenaufnehmen):
             aufnehmen(1)
@@ -49,13 +53,13 @@ def game(): #Funktion die das Menu aufruft
             aufnehmen(3)
             aufnehmen(4)
         if spieler > 1:
-            labelBot1 = Label(master=tkFenster, text="Bot1:\n0", bg='black', font=('Arial', 36), fg="white")
+            labelBot1 = Label(master=tkFenster, text=f"Bot1:\n{len(hand2)}", bg=secondary_color, font=('Arial', 36), fg=font_color_1)
             labelBot1.place(x=10, y=(height/2)-125, width=150, height=250)
         if spieler > 2:
-            labelBot2 = Label(master=tkFenster, text="Bot2:\n0", bg='black', font=('Arial', 36), fg="white")
+            labelBot2 = Label(master=tkFenster, text=f"Bot2:\n{len(hand3)}", bg=secondary_color, font=('Arial', 36), fg=font_color_1)
             labelBot2.place(x=(width/2)-75, y=10, width=150, height=250)
         if spieler > 3:
-            labelBot3 = Label(master=tkFenster, text="Bot3:\n0", bg='black', font=('Arial', 36), fg="white")
+            labelBot3 = Label(master=tkFenster, text=f"Bot3:\n{len(hand4)}", bg=secondary_color, font=('Arial', 36), fg=font_color_1)
             labelBot3.place(x=width-165, y=(height/2)-125, width=150, height=250)
 
     def aufnehmen1e(event):
@@ -64,7 +68,7 @@ def game(): #Funktion die das Menu aufruft
         aufnehmen(1) #für hand 1
 
     def aufnehmen(hand):
-        print("Karte wird aufgenommen")
+        print(f"Karte wird von Spieler {hand} aufgenommen")
         global nachziehstapel, hand1, hand2, hand3, hand4
         if len(nachziehstapel) == 0: #guckt ob noch Karten auf dem Stapel sind
             print("keine Karten mehr auf dem Stapel")
@@ -127,70 +131,173 @@ def game(): #Funktion die das Menu aufruft
             canvas.create_text(temp, height/2, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert
             ##print(f"gelegt wurden jetzt: {ablagestapel}")
             ordnen()
-            tkFenster.after(2000, zugbot1)
-        else: print(f"sie konnte nicht gelegt werden")
+            if spieler > 1:
+                labelAnzeige.config(text="Die Bots spielen!")
+                tkFenster.after(1000, zugbot1)
+        else: labelAnzeige.config(text="Diese Karte kannst du nicht legen!")
 
     def ordnen():
         if len(hand1) == 0:
-            print("gewonnen")
+            labelAnzeige.config(text="Du hast gewonnen!")
             return
-        print("Karten werden neu gerordnet")
-        #framedeck.destroy
-        framedeck = Frame(master=tkFenster, background="gray")
-        framedeck.place(y=height-250, width=width, height=250)
-        #canvascards.delete("all") #Canvas wird gelehrt
-        index = width / (len(hand1)) 
-        x0 = (index/2)-75
-        #x1 = x0 + 150 #Abstände werden neu berechnet
-        for i in range(len(hand1)): #Karten werden plaziert
-            #command = f"legen({i})"
-            button_Karten = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(i))
-            button_Karten.place(x=x0, y=0, width=150, height=250)
-            """
-            canvascards.create_rectangle(x0, 0, x1, 250, fill=hand1[i][0]) #Hintergrund der Karte
-            canvascards.create_text(x0+75, 125, font=("Arial", 100), text=hand1[i][1], fill="black") #Vordergrund der Karte
-            """
-            x0 += index
-            #x1 = x0 + 150
+        else:
+            #framedeck.destroy
+            framedeck = Frame(master=tkFenster, background=primary_color)
+            framedeck.place(y=height-250, width=width, height=250)
+            #canvascards.delete("all") #Canvas wird gelehrt
+            index = width / (len(hand1)) 
+            x0 = (index/2)-75
+            #x1 = x0 + 150 #Abstände werden neu berechnet
+            for i in range(len(hand1)): #Karten werden plaziert
+                if i == 0:
+                    button_Karte1 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(0))
+                    button_Karte1.place(x=x0, y=0, width=150, height=250)
+                if i == 1:
+                    button_Karte2 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(1))
+                    button_Karte2.place(x=x0, y=0, width=150, height=250)
+                if i == 2:
+                    button_Karte3 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(2))
+                    button_Karte3.place(x=x0, y=0, width=150, height=250)
+                if i == 3:
+                    button_Karte4 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(3))
+                    button_Karte4.place(x=x0, y=0, width=150, height=250)
+                if i == 4:
+                    button_Karte5 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(4))
+                    button_Karte5.place(x=x0, y=0, width=150, height=250)
+                if i == 5:
+                    button_Karte6 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(5))
+                    button_Karte6.place(x=x0, y=0, width=150, height=250)
+                if i == 6:
+                    button_Karte7 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(6))
+                    button_Karte7.place(x=x0, y=0, width=150, height=250)
+                if i == 7:
+                    button_Karte8 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(7))
+                    button_Karte8.place(x=x0, y=0, width=150, height=250)
+                if i == 8:
+                    button_Karte9 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(8))
+                    button_Karte9.place(x=x0, y=0, width=150, height=250)
+                if i == 9:
+                    button_Karte10 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(9))
+                    button_Karte10.place(x=x0, y=0, width=150, height=250)
+                if i == 10:
+                    button_Karte11 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(10))
+                    button_Karte11.place(x=x0, y=0, width=150, height=250)
+                if i == 11:
+                    button_Karte12 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(11))
+                    button_Karte12.place(x=x0, y=0, width=150, height=250)
+                if i == 12:
+                    button_Karte13 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(12))
+                    button_Karte13.place(x=x0, y=0, width=150, height=250)
+                if i == 13:
+                    button_Karte14 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(13))
+                    button_Karte14.place(x=x0, y=0, width=150, height=250)
+                if i == 14:
+                    button_Karte15 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(14))
+                    button_Karte15.place(x=x0, y=0, width=150, height=250)
+                if i == 15:
+                    button_Karte16 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(15))
+                    button_Karte16.place(x=x0, y=0, width=150, height=250)
+                if i == 16:
+                    button_Karte17 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(16))
+                    button_Karte17.place(x=x0, y=0, width=150, height=250)
+                if i == 17:
+                    button_Karte18 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(17))
+                    button_Karte18.place(x=x0, y=0, width=150, height=250)
+                if i == 18:
+                    button_Karte19 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(18))
+                    button_Karte19.place(x=x0, y=0, width=150, height=250)
+                if i == 19:
+                    button_Karte20 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(19))
+                    button_Karte20.place(x=x0, y=0, width=150, height=250)
+                if i == 20:
+                    print("veloren")
+                """
+                canvascards.create_rectangle(x0, 0, x1, 250, fill=hand1[i][0]) #Hintergrund der Karte
+                canvascards.create_text(x0+75, 125, font=("Arial", 100), text=hand1[i][1], fill="black") #Vordergrund der Karte
+                """
+                x0 += index
+                #x1 = x0 + 150
 
     def zugbot1():
-        global ablagestapel, hand2, hand3, hand4
-        if spieler > 1:
-            print("Bots 1 ist dran")
-            for i in range(len(hand2)):
-                print(f"die {i}. Karte soll gelegt werden: {hand2[i]}")
-                if ablagestapel[0][0] == hand2[i][0] or ablagestapel[0][1] == hand2[i][1]:
-                    ablagestapel = [hand2[i]] + ablagestapel #Karte vorne in Liste rein
-                    hand2.pop(i) #Karte aus anderer Liste gelöscht
-                    temp = width/2
-                    canvas.create_rectangle(temp-75, (height/2)-125, temp+75, (height/2)+125, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert
-                    canvas.create_text(temp, height/2, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert
-                    ##print(f"gelegt wurden jetzt: {ablagestapel}")
-                    break
-        if spieler > 2:
-            tkFenster.after(1000, zugbot2)
+        global ablagestapel, hand2
+        labelAnzeige.config(text="Die Bots spielen!")
+        gelegt = False
+        for i in range(len(hand2)):
+            print(f"die {i}. Karte soll von Bot 1 gelegt werden: {hand2[i]}")
+            if ablagestapel[0][0] == hand2[i][0] or ablagestapel[0][1] == hand2[i][1]:
+                ablagestapel = [hand2[i]] + ablagestapel #Karte vorne in Liste rein
+                hand2.pop(i) #Karte aus anderer Liste gelöscht
+                temp = width/2
+                canvas.create_rectangle(temp-75, (height/2)-125, temp+75, (height/2)+125, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert
+                canvas.create_text(temp, height/2, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert
+                ##print(f"gelegt wurden jetzt: {ablagestapel}")
+                gelegt = True
+                if len(hand2) == 0:
+                    labelAnzeige.config(text="Bot 1 ist Fertig!")
+                    if len(hand3) == 0 and len(hand4) == 0:
+                        labelAnzeige.config(text="Du hast verloren!")    
+                break
+        if gelegt == False:
+            aufnehmen(2)
+            zugbot1()
+        else:
+            labelBot1.config(text=f"Bot1:\n{len(hand2)}")
+            if spieler > 2:
+                tkFenster.after(1000, zugbot2)
+            else: labelAnzeige.config(text="Du bist dran!")
+
+    def zugbot1():
+        global ablagestapel, hand2
+        labelAnzeige.config(text="Die Bots spielen!")
+        gelegt = False
+        for i in range(len(hand2)):
+            print(f"die {i}. Karte soll von Bot 1 gelegt werden: {hand2[i]}")
+            if ablagestapel[0][0] == hand2[i][0] or ablagestapel[0][1] == hand2[i][1]:
+                ablagestapel = [hand2[i]] + ablagestapel #Karte vorne in Liste rein
+                hand2.pop(i) #Karte aus anderer Liste gelöscht
+                temp = width/2
+                canvas.create_rectangle(temp-75, (height/2)-125, temp+75, (height/2)+125, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert
+                canvas.create_text(temp, height/2, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert
+                ##print(f"gelegt wurden jetzt: {ablagestapel}")
+                gelegt = True
+                if len(hand2) == 0:
+                    labelAnzeige.config(text="Bot 1 ist Fertig!")
+                    if len(hand3) == 0 and len(hand4) == 0:
+                        labelAnzeige.config(text="Du hast verloren!")    
+                break
+        if gelegt == False:
+            aufnehmen(2)
+            zugbot1()
+        else:
+            labelBot1.config(text=f"Bot1:\n{len(hand2)}")
+            if spieler > 2:
+                tkFenster.after(1000, zugbot2)
+            else: labelAnzeige.config(text="Du bist dran!")
 
     def zugbot2():
-        print("Bots 2 ist dran")
-        global ablagestapel, hand2, hand3, hand4
+        #print("Bot 2 ist dran")
+        global ablagestapel, hand3
         for i in range(len(hand3)):
-            print(f"die {i}. Karte wurde gelegt: {hand3[i]}")
+            print(f"die {i}. Karte wurde von Bot 2 gelegt: {hand3[i]}")
             if ablagestapel[0][0] == hand3[i][0] or ablagestapel[0][1] == hand3[i][1]:
                 ablagestapel = [hand3[i]] + ablagestapel #Karte vorne in Liste rein
                 hand3.pop(i) #Karte aus anderer Liste gelöscht
                 temp = width/2
                 canvas.create_rectangle(temp-75, (height/2)-125, temp+75, (height/2)+125, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert
                 canvas.create_text(temp, height/2, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert
+                labelBot2.config(text=f"Bot2:\n{len(hand3)}")
                 ##print(f"gelegt wurden jetzt: {ablagestapel}")
                 break
         if spieler > 3:
             tkFenster.after(1000, zugbot3)
+        else: labelAnzeige.config(text="Du bist dran!")
 
     def zugbot3():
-        print("Bots 3 ist dran")
-        global ablagestapel, hand2, hand3, hand4
+        global ablagestapel, hand4
+        labelAnzeige.config(text="Die Bots spielen!")
+        gelegt = False
         for i in range(len(hand4)):
-            print(f"die {i}. Karte wurde gelegt: {hand4[i]}")
+            print(f"die {i}. Karte soll von Bot 3 gelegt werden: {hand4[i]}")
             if ablagestapel[0][0] == hand4[i][0] or ablagestapel[0][1] == hand4[i][1]:
                 ablagestapel = [hand4[i]] + ablagestapel #Karte vorne in Liste rein
                 hand4.pop(i) #Karte aus anderer Liste gelöscht
@@ -198,7 +305,32 @@ def game(): #Funktion die das Menu aufruft
                 canvas.create_rectangle(temp-75, (height/2)-125, temp+75, (height/2)+125, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert
                 canvas.create_text(temp, height/2, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert
                 ##print(f"gelegt wurden jetzt: {ablagestapel}")
+                gelegt = True
+                if len(hand4) == 0:
+                    labelAnzeige.config(text="Bot 1 ist Fertig!")
+                    if len(hand3) == 0 and len(hand2) == 0:
+                        labelAnzeige.config(text="Du hast verloren!")    
                 break
+        if gelegt == False:
+            aufnehmen(2)
+            zugbot1()
+        else:
+            labelBot3.config(text=f"Bot3:\n{len(hand4)}")
+            labelAnzeige.config(text="Du bist dran!")
+
+
+        for i in range(len(hand4)):
+            print(f"die {i}. Karte wurde von Bot 3 gelegt: {hand4[i]}")
+            if ablagestapel[0][0] == hand4[i][0] or ablagestapel[0][1] == hand4[i][1]:
+                ablagestapel = [hand4[i]] + ablagestapel #Karte vorne in Liste rein
+                hand4.pop(i) #Karte aus anderer Liste gelöscht
+                temp = width/2
+                canvas.create_rectangle(temp-75, (height/2)-125, temp+75, (height/2)+125, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert
+                canvas.create_text(temp, height/2, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert
+                labelBot3.config(text=f"Bot3:\n{len(hand4)}")
+                ##print(f"gelegt wurden jetzt: {ablagestapel}")
+                break
+        labelAnzeige.config(text="Du bist dran!")
     
     stapelerstellen()
     # Erzeugung des Fensters
@@ -211,18 +343,19 @@ def game(): #Funktion die das Menu aufruft
     #print(width)
     #print(height)
 
-    # Zeichenleinwand
-    canvas = Canvas(master=tkFenster, background="gray")
-    canvas.place(width=width, height=height-250)
-    framedeck = Frame(master=tkFenster, background="gray")
-    framedeck.place(y=height-250, width=width, height=250)
-    #canvascards = Canvas(master=tkFenster, background="gray")
-    #canvascards.place(y=height-250, width=width, height=250)
-    button_quit = Button(master=tkFenster, text="X", bg="red", font=("Arial", 35), command=quit)#close button
-    button_quit.place(x=width-75, y=25, width=50, height=50)
     # Grafikobjekte
+    canvas = Canvas(master=tkFenster, background=primary_color)
+    canvas.place(width=width, height=height-250)
+    framedeck = Frame(master=tkFenster, background=primary_color)
+    framedeck.place(y=height-250, width=width, height=250)
+    #canvascards = Canvas(master=tkFenster, background=primary_color)
+    #canvascards.place(y=height-250, width=width, height=250)
+    button_quit = Button(master=tkFenster, text="X", bg="red", font=("Arial", 35), command=quit)#close button ≡
+    button_quit.place(x=width-75, y=25, width=50, height=50)
+    labelAnzeige = Label(master=tkFenster, text=f"Du bist dran!", bg=primary_color, font=('Arial', 36), fg="black")
+    labelAnzeige.place(x=0, y=height-350, width=width, height=100)
     erstekarte()
-    button_aufnehmen = Button(master=tkFenster, text="aufnehmen", bg="black", font=("Arial", 20), fg="white", command=aufnehmen1)
+    button_aufnehmen = Button(master=tkFenster, text="aufnehmen", bg=secondary_color, font=("Arial", 20), fg=font_color_1, command=aufnehmen1)
     button_aufnehmen.place(x=(2*width/3)-75, y=(height/2)-125, width=150, height=250)
     haende()
     # Schaltfaechen
