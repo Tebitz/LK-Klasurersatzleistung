@@ -17,3 +17,14 @@ def textdatei(parameter, value): #parameter = was gesucht wird ("number_of_cards
     for i in range(len(data)):
         text.write(data[i] + "\n")
     text.close()
+    
+     #Checkt ob ein parameter den angegebenen value haben darf, bervor er ihn die txt eingetragen lässt und gibt entsprechend True, oder False aus.
+        #wenn mode = 1, wird er auch wenn er passt nicht eingetragen.
+    def integrity_check(parameter, value, mode):
+    if parameter == "number_of_cards":
+        if int(value) <= int(textdatei("cards_in_total", "null")) / (int(textdatei("number_of_bots", "null"))+1):
+            if mode == 1:
+                textdatei(parameter, value)
+            return("True")
+        else:
+            return("False")
