@@ -17,16 +17,22 @@ nachziehstapel = []
 
 #Variblen #aus txt
 spieler = 2 #bots + 1
-kartenaufnehmen = 5 #Karten mit denen jeder Spieler startet
+kartenaufnehmen = 3 #Karten mit denen jeder Spieler startet
 primary_color = "gray"
 secondary_color = "black"
 font_color_1 = "white"
+maximalekarten = 20 #10-20
 anzahlfarben = 5
 
 def game(): #Gesammtfunktion die das Menu aufruft
 
     def aufnahmestapelerstellen():
-        farben = ["yellow", "blue", "red", "green"]
+        if anzahlfarben < 4:
+            farben = ["blue", "red", "green"]
+        if anzahlfarben == 4:
+            farben = ["yellow", "blue", "red", "green"]
+        else: 
+            farben = ["cyan", "yellow", "blue", "red", "green"]   
         zahlen = [0, 1, 2, 3, 4, 5, 6, 7]
         #Liste der einzelnen Zahlen und Farben
         global nachziehstapel
@@ -144,79 +150,80 @@ def game(): #Gesammtfunktion die das Menu aufruft
         #neuer Frame wird für die Hand erstellt
         framedeck = Frame(master=tkFenster, background=primary_color)
         framedeck.place(y=height-250, width=width, height=250)
+        print(f"deine {len(hand1)} Karten werden neu sotiert")
         #Abstände werden neu berechnet:
         if len(hand1) > 0: 
             index = width / (len(hand1)) 
-        else: index = 0
-        x0 = (index/2)-75 
-        for i in range(len(hand1)): #Karten werden plaziert
-            if i == 0:
-                button_Karte1 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(0))
-                button_Karte1.place(x=x0, y=0, width=150, height=250)
-            if i == 1:
-                button_Karte2 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(1))
-                button_Karte2.place(x=x0, y=0, width=150, height=250)
-            if i == 2:
-                button_Karte3 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(2))
-                button_Karte3.place(x=x0, y=0, width=150, height=250)
-            if i == 3:
-                button_Karte4 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(3))
-                button_Karte4.place(x=x0, y=0, width=150, height=250)
-            if i == 4:
-                button_Karte5 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(4))
-                button_Karte5.place(x=x0, y=0, width=150, height=250)
-            if i == 5:
-                button_Karte6 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(5))
-                button_Karte6.place(x=x0, y=0, width=150, height=250)
-            if i == 6:
-                button_Karte7 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(6))
-                button_Karte7.place(x=x0, y=0, width=150, height=250)
-            if i == 7:
-                button_Karte8 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(7))
-                button_Karte8.place(x=x0, y=0, width=150, height=250)
-            if i == 8:
-                button_Karte9 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(8))
-                button_Karte9.place(x=x0, y=0, width=150, height=250)
-            if i == 9:
-                button_Karte10 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(9))
-                button_Karte10.place(x=x0, y=0, width=150, height=250)
-            if i == 10:
-                button_Karte11 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(10))
-                button_Karte11.place(x=x0, y=0, width=150, height=250)
-            if i == 11:
-                button_Karte12 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(11))
-                button_Karte12.place(x=x0, y=0, width=150, height=250)
-            if i == 12:
-                button_Karte13 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(12))
-                button_Karte13.place(x=x0, y=0, width=150, height=250)
-            if i == 13:
-                button_Karte14 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(13))
-                button_Karte14.place(x=x0, y=0, width=150, height=250)
-            if i == 14:
-                button_Karte15 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(14))
-                button_Karte15.place(x=x0, y=0, width=150, height=250)
-            if i == 15:
-                button_Karte16 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(15))
-                button_Karte16.place(x=x0, y=0, width=150, height=250)
-            if i == 16:
-                button_Karte17 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(16))
-                button_Karte17.place(x=x0, y=0, width=150, height=250)
-            if i == 17:
-                button_Karte18 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(17))
-                button_Karte18.place(x=x0, y=0, width=150, height=250)
-            if i == 18:
-                button_Karte19 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(18))
-                button_Karte19.place(x=x0, y=0, width=150, height=250)
-            if i == 19:
-                button_Karte20 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(19))
-                button_Karte20.place(x=x0, y=0, width=150, height=250)
-            if i == 20:
-                print("Du hast veloren, wegen zu vielen Karten auf der Hand!")
-                gewonnen = True
-                return
-            x0 += index
-        if len(hand1) == 0:
-            labelAnzeige.config(text="Du hast gewonnen!")
+            x0 = (index/2)-75 
+            for i in range(len(hand1)): #Karten werden plaziert
+                if i == maximalekarten: #Verlierbedingung
+                    labelAnzeige.config(text="Du hast veloren, wegen zu vielen Karten auf der Hand!") #Velust wird dem Spieler angezeigt
+                    gewonnen = True # Zustand, damit Bots nicht mehr weiterspielen
+                    return
+                #Sie sind Buttons, damit man sie durch einen Klick legen kann
+                if i == 0:  #Es müssen immer neue Buttons erstellt werden, da sonst der command überschrieben wird
+                    button_Karte1 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(0)) #command= lambda: legen(i)
+                    button_Karte1.place(x=x0, y=0, width=150, height=250)
+                if i == 1:
+                    button_Karte2 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(1))
+                    button_Karte2.place(x=x0, y=0, width=150, height=250)
+                if i == 2:
+                    button_Karte3 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(2))
+                    button_Karte3.place(x=x0, y=0, width=150, height=250)
+                if i == 3:
+                    button_Karte4 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(3))
+                    button_Karte4.place(x=x0, y=0, width=150, height=250)
+                if i == 4:
+                    button_Karte5 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(4))
+                    button_Karte5.place(x=x0, y=0, width=150, height=250)
+                if i == 5:
+                    button_Karte6 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(5))
+                    button_Karte6.place(x=x0, y=0, width=150, height=250)
+                if i == 6:
+                    button_Karte7 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(6))
+                    button_Karte7.place(x=x0, y=0, width=150, height=250)
+                if i == 7:
+                    button_Karte8 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(7))
+                    button_Karte8.place(x=x0, y=0, width=150, height=250)
+                if i == 8:
+                    button_Karte9 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(8))
+                    button_Karte9.place(x=x0, y=0, width=150, height=250)
+                if i == 9:
+                    button_Karte10 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(9))
+                    button_Karte10.place(x=x0, y=0, width=150, height=250)
+                if i == 10:
+                    button_Karte11 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(10))
+                    button_Karte11.place(x=x0, y=0, width=150, height=250)
+                if i == 11:
+                    button_Karte12 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(11))
+                    button_Karte12.place(x=x0, y=0, width=150, height=250)
+                if i == 12:
+                    button_Karte13 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(12))
+                    button_Karte13.place(x=x0, y=0, width=150, height=250)
+                if i == 13:
+                    button_Karte14 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(13))
+                    button_Karte14.place(x=x0, y=0, width=150, height=250)
+                if i == 14:
+                    button_Karte15 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(14))
+                    button_Karte15.place(x=x0, y=0, width=150, height=250)
+                if i == 15:
+                    button_Karte16 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(15))
+                    button_Karte16.place(x=x0, y=0, width=150, height=250)
+                if i == 16:
+                    button_Karte17 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(16))
+                    button_Karte17.place(x=x0, y=0, width=150, height=250)
+                if i == 17:
+                    button_Karte18 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(17))
+                    button_Karte18.place(x=x0, y=0, width=150, height=250)
+                if i == 18:
+                    button_Karte19 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(18))
+                    button_Karte19.place(x=x0, y=0, width=150, height=250)
+                if i == 19:
+                    button_Karte20 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(19))
+                    button_Karte20.place(x=x0, y=0, width=150, height=250)
+                x0 += index
+        else: #wenn keine Karten mehr auf der Hand sind (Gewinnbedingung)
+            labelAnzeige.config(text="Du hast gewonnen!") #Gewinn wird angezeigt
             gewonnen = True
 
     def zugbot1():
