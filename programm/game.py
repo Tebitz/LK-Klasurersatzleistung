@@ -344,7 +344,8 @@ def game(): #Gesammtfunktion die das Menu aufruft
     erstekarte()
     haende()
 
-    ###Keybinds###
+    ###Keybinds### 
+    """
     tkFenster.bind('<KeyPress- >', aufnehmen1e)
     tkFenster.bind('<KeyPress-1>', legen1)
     tkFenster.bind('<KeyPress-2>', legen2)
@@ -360,7 +361,7 @@ def game(): #Gesammtfunktion die das Menu aufruft
     tkFenster.bind('<KeyPress-End>', quit)
     tkFenster.bind('<KeyPress-Delete>', quit)
     tkFenster.bind('<KeyPress-BackSpace>', quit)
-
+    """
     # Aktivierung der Ereignisschleife
     tkFenster.mainloop()
 
