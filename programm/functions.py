@@ -18,7 +18,8 @@ def textdatei(parameter, value): #parameter = was gesucht wird ("number_of_cards
         text.write(data[i] + "\n")
     text.close()
     
-#Checkt ob ein parameter den angegebenen value haben darf und gibt entsprechend True, oder False aus.
+    
+    
 def cards_check(parameter):
     if parameter == "number_of_bots":
         if int(textdatei("number_of_cards", "null")) <= (int(textdatei("colors", "null"))*14) / (int(textdatei("number_of_bots", "null"))+2):
