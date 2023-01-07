@@ -1,36 +1,35 @@
 from tkinter import *
 from random import randint
+from functions import textdatei
 
-#einstellung für karte nur einmal
 #menu
-#anzahl Farben
 #aus txt bekommen
 #Bug: Bot nimmt 50 Karten auf
-#wenn der bot gewinnt spielt er weiter mit?
 #gewonnen = True
 #Buttons blockieren
 
-#Listen (Kartenstapel werden erstellt)
-hand1 = []
-hand2 = []
-hand3 = []
-hand4 = []
-ablagestapel = []
-nachziehstapel = []
-
-#Variblen #aus txt
-spieler = 3 #bots + 1
-kartenaufnehmen = 5 #Karten mit denen jeder Spieler startet
-primary_color = "gray"
-secondary_color = "black"
-font_color_1 = "white"
-maximalekarten = 20 #10-20
-anzahlfarben = 3
-
 def game(): #Gesammtfunktion die das Menu aufruft
+    global hand1, hand2, hand3, hand4, ablagestapel, nachziehstapel
+
+    #Listen
+    hand1 = []
+    hand2 = []
+    hand3 = []
+    hand4 = []
+    ablagestapel = []
+    nachziehstapel = []
+
+    #Variablen aus txt extrahiert:
+    spieler = int(textdatei("number_of_bots", "null"))+1
+    kartenaufnehmen = int(textdatei("number_of_cards", "null")) #Karten mit denen jeder Spieler startet
+    primary_color = textdatei("primary_color", "null")
+    secondary_color = textdatei("secondary_color", "null")
+    font_color_1 = textdatei("font_color_1", "null")
+    maximalekarten = 20 #10-20
+    anzahlfarben = int(textdatei("colors", "null"))
 
     def aufnahmestapelerstellen():
-        if anzahlfarben < 4:
+        if anzahlfarben < 4: #Zwischen 3 Farbsets wird ausgewählt
             farben = ["blue", "red", "green"]
         elif anzahlfarben == 4:
             farben = ["yellow", "blue", "red", "green"]
@@ -46,8 +45,6 @@ def game(): #Gesammtfunktion die das Menu aufruft
         print(f"Der Nachziehstapel wird erstellt: {nachziehstapel}")
 
     def erstekarte(): #eine erste Karte muss als Grundlage gelegt werden
-        print("Spielfeld wird vorbereitet")
-        canvas.delete("all")
         global nachziehstapel, ablagestapel
         random = randint(0, len(nachziehstapel)-1) #random Zahl für die zugehörige Karte
         ablagestapel = [nachziehstapel[random]] #Karte wird auf Ablagestapel gelegt
@@ -132,13 +129,13 @@ def game(): #Gesammtfunktion die das Menu aufruft
     def legen(karte): #Karte = (Index)
         global ablagestapel, hand1
         if ablagestapel[0][0] == hand1[karte][0] or ablagestapel[0][1] == hand1[karte][1]: #Überprüfen, ob Karte gelegt werden darf
+            print(f"die {karte}. Karte wurde gelegt: {hand1[karte]}")
             ablagestapel = [hand1[karte]] + ablagestapel #Karte vorne auf den Ablagestapel
             hand1.pop(karte) #Karte aus Hand gelöscht
             #Karte wird in GUI plaziert
             temp = width/2
             canvas.create_rectangle(temp-75, (height/2)-125, temp+75, (height/2)+125, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert
             canvas.create_text(temp, height/2, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert
-            print(f"die {karte}. Karte wurde gelegt:") #{hand1[karte]}
             ordnen() #Hand wird neu geordnet
             if spieler > 1 and gewonnen == False: #Überprüfen, ob Bots dran sind
                 labelAnzeige.config(text="Die Bots spielen!") #Benachrichtigung für Spieler
@@ -162,64 +159,64 @@ def game(): #Gesammtfunktion die das Menu aufruft
             for i in range(len(hand1)): #Karten werden plaziert
                 #Sie sind Buttons, damit man sie durch einen Klick legen kann
                 if i == 0:  #Es müssen immer neue Buttons erstellt werden, da sonst der command überschrieben wird
-                    button_Karte1 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(0))
+                    button_Karte1 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(0)) #command= lambda: legen(i)
                     button_Karte1.place(x=x0, y=0, width=150, height=250)
                 elif i == 1:
-                    button_Karte2 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(1))
+                    button_Karte2 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(1))
                     button_Karte2.place(x=x0, y=0, width=150, height=250)
                 elif i == 2:
-                    button_Karte3 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(2))
+                    button_Karte3 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(2))
                     button_Karte3.place(x=x0, y=0, width=150, height=250)
                 elif i == 3:
-                    button_Karte4 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(3))
+                    button_Karte4 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(3))
                     button_Karte4.place(x=x0, y=0, width=150, height=250)
                 elif i == 4:
-                    button_Karte5 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(4))
+                    button_Karte5 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(4))
                     button_Karte5.place(x=x0, y=0, width=150, height=250)
                 elif i == 5:
-                    button_Karte6 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(5))
+                    button_Karte6 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(5))
                     button_Karte6.place(x=x0, y=0, width=150, height=250)
                 elif i == 6:
-                    button_Karte7 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(6))
+                    button_Karte7 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(6))
                     button_Karte7.place(x=x0, y=0, width=150, height=250)
                 elif i == 7:
-                    button_Karte8 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(7))
+                    button_Karte8 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(7))
                     button_Karte8.place(x=x0, y=0, width=150, height=250)
                 elif i == 8:
-                    button_Karte9 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(8))
+                    button_Karte9 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(8))
                     button_Karte9.place(x=x0, y=0, width=150, height=250)
                 elif i == 9:
-                    button_Karte10 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(9))
+                    button_Karte10 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(9))
                     button_Karte10.place(x=x0, y=0, width=150, height=250)
                 elif i == 10:
-                    button_Karte11 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(10))
+                    button_Karte11 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(10))
                     button_Karte11.place(x=x0, y=0, width=150, height=250)
                 elif i == 11:
-                    button_Karte12 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(11))
+                    button_Karte12 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(11))
                     button_Karte12.place(x=x0, y=0, width=150, height=250)
                 elif i == 12:
-                    button_Karte13 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(12))
+                    button_Karte13 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(12))
                     button_Karte13.place(x=x0, y=0, width=150, height=250)
                 elif i == 13:
-                    button_Karte14 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(13))
+                    button_Karte14 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(13))
                     button_Karte14.place(x=x0, y=0, width=150, height=250)
                 elif i == 14:
-                    button_Karte15 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(14))
+                    button_Karte15 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(14))
                     button_Karte15.place(x=x0, y=0, width=150, height=250)
                 elif i == 15:
-                    button_Karte16 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(15))
+                    button_Karte16 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(15))
                     button_Karte16.place(x=x0, y=0, width=150, height=250)
                 elif i == 16:
-                    button_Karte17 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(16))
+                    button_Karte17 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(16))
                     button_Karte17.place(x=x0, y=0, width=150, height=250)
                 elif i == 17:
-                    button_Karte18 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(17))
+                    button_Karte18 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(17))
                     button_Karte18.place(x=x0, y=0, width=150, height=250)
                 elif i == 18:
-                    button_Karte19 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(18))
+                    button_Karte19 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(18))
                     button_Karte19.place(x=x0, y=0, width=150, height=250)
                 elif i == 19:
-                    button_Karte20 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(19))
+                    button_Karte20 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command=legen(19))
                     button_Karte20.place(x=x0, y=0, width=150, height=250)
                 if i == maximalekarten: #Verlierbedingung
                         labelAnzeige.config(text="Du hast veloren, wegen zu vielen Karten auf der Hand!") #Velust wird dem Spieler angezeigt
@@ -235,6 +232,7 @@ def game(): #Gesammtfunktion die das Menu aufruft
         gelegt = False
         for i in range(len(hand2)): #versucht alle Karten zu legen
             if ablagestapel[0][0] == hand2[i][0] or ablagestapel[0][1] == hand2[i][1]: #Überprüfen, ob Karte gelegt werden darf
+                print(f"der Bot 1 hat {hand2[i]} gelegt")
                 ablagestapel = [hand2[i]] + ablagestapel #Karte vorne auf den Ablagestapel
                 hand2.pop(i) #Karte aus Hand gelöscht
                 #Karte wird in GUI plaziert:
@@ -242,48 +240,46 @@ def game(): #Gesammtfunktion die das Menu aufruft
                 canvas.create_rectangle(temp-75, (height/2)-125, temp+75, (height/2)+125, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert
                 canvas.create_text(temp, height/2, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert
                 labelBot1.config(text=f"Bot1:\n{len(hand2)}")
-                #print(f"der Bot 1 hat {hand2[i]} gelegt")
                 gelegt = True
-                if len(hand2) == 0:
+                if len(hand2) == 0: #überprüft, ob der Bot noch Karten hat
                     labelAnzeige.config(text="Bot 1 ist Fertig!") #Benachrichtigung für Spieler
                     if (len(hand3) == 0 and len(hand4) == 0) or spieler > 2: #überprüft, ob alle Bots gewonnen haben
                         labelAnzeige.config(text="Du hast verloren!")  #Benachrichtigung für Spieler
                         return #stoppt Zug
                 break #wenn eine Karte gelegt wurde ist der Zug zuende
         labelBot1.config(text=f"Bot1:\n{len(hand2)}") #Anzeige für Spieler
-        if gelegt == False: #wenn er nicht legen konnte 
-            aufnehmen(2) #  nimmt er eine Karte auf
-            tkFenster.after(1000, zugbot1) #     und versucht wieder eine Karte zu legen
+        if gelegt == False:                #wenn er nicht legen konnte 
+            aufnehmen(2)                   #nimmt er eine Karte auf
+            tkFenster.after(1000, zugbot1) #und versucht wieder eine Karte zu legen
         else:
             if spieler > 2: #Abfrage ob Bot 2 auch Aktiv ist
                 tkFenster.after(1000, zugbot2) #weitergabe
             else: labelAnzeige.config(text="Du bist dran!")
-            #wenn nicht kommt der Spieler wieder dran
+                #wenn nicht kommt der Spieler wieder dran
 
     def zugbot2():
         global ablagestapel, hand3 
         gelegt = False
         for i in range(len(hand3)): #versucht alle Karten zu legen
             if ablagestapel[0][0] == hand3[i][0] or ablagestapel[0][1] == hand3[i][1]: #Überprüfen, ob Karte gelegt werden darf
+                print(f"der Bot 2 hat {hand3[i]} gelegt")
                 ablagestapel = [hand3[i]] + ablagestapel #Karte vorne auf den Ablagestapel
                 hand3.pop(i) #Karte aus Hand gelöscht
                 #Karte wird in GUI plaziert:
                 temp = width/2
                 canvas.create_rectangle(temp-75, (height/2)-125, temp+75, (height/2)+125, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert
                 canvas.create_text(temp, height/2, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert
-                labelBot2.config(text=f"Bot2:\n{len(hand3)}")
-                #print(f"der Bot 2 hat {hand2[i]} gelegt")
                 gelegt = True
-                if len(hand3) == 0:
+                if len(hand3) == 0: #Kontrolliert ob Bot noch Karten hat
                     labelAnzeige.config(text="Bot 2 ist Fertig!") #Benachrichtigung für Spieler
                     if (len(hand2) == 0 and len(hand4) == 0) or (len(hand2) == 0 and spieler > 3): #überprüft, ob alle Bots gewonnen haben
-                        labelAnzeige.config(text="Du hast verloren!")  #Benachrichtigung für Spieler
-                        return  #stoppt Zug 
-                break#wenn eine Karte gelegt wurde ist der Zug zuende
+                        labelAnzeige.config(text="Du hast verloren!") #Benachrichtigung für Spieler
+                        return #stoppt Zug 
+                break #wenn eine Karte gelegt wurde ist der Zug zuende
         labelBot2.config(text=f"Bot2:\n{len(hand3)}") #Anzeige für Spieler
-        if gelegt == False: #wenn er nicht legen konnte 
-            aufnehmen(2) #  nimmt er eine Karte auf
-            tkFenster.after(1000, zugbot2) #     und versucht wieder eine Karte zu legen
+        if gelegt == False:                #wenn er nicht legen konnte 
+            aufnehmen(2)                   #nimmt er eine Karte auf
+            tkFenster.after(1000, zugbot2) #und versucht wieder eine Karte zu legen
         else:
             if spieler > 3: #Abfrage ob Bot 3 auch Aktiv ist
                 tkFenster.after(1000, zugbot3) #weitergabe
@@ -291,59 +287,64 @@ def game(): #Gesammtfunktion die das Menu aufruft
 
     def zugbot3():
         global ablagestapel, hand4
-        labelAnzeige.config(text="Die Bots spielen!")
         gelegt = False
-        for i in range(len(hand4)):
-            print(f"die {i}. Karte soll von Bot 3 gelegt werden: {hand4[i]}")
-            if ablagestapel[0][0] == hand4[i][0] or ablagestapel[0][1] == hand4[i][1]:
-                ablagestapel = [hand4[i]] + ablagestapel #Karte vorne in Liste rein
-                hand4.pop(i) #Karte aus anderer Liste gelöscht
+        for i in range(len(hand4)): #versucht alle Karten zu legen
+            if ablagestapel[0][0] == hand4[i][0] or ablagestapel[0][1] == hand4[i][1]: #Überprüfen, ob Karte gelegt werden darf
+                print(f"der Bot 3 hat {hand4[i]} gelegt")
+                ablagestapel = [hand4[i]] + ablagestapel #Karte vorne auf den Ablagestapel
+                hand4.pop(i) #Karte aus Hand gelöscht
+                #Karte wird in GUI plaziert:
                 temp = width/2
                 canvas.create_rectangle(temp-75, (height/2)-125, temp+75, (height/2)+125, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert
                 canvas.create_text(temp, height/2, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert
-                labelBot3.config(text=f"Bot3:\n{len(hand4)}")
                 gelegt = True
-                if len(hand4) == 0:
-                    labelAnzeige.config(text="Bot 1 ist Fertig!")
-                    if len(hand3) == 0 and len(hand2) == 0:
-                        labelAnzeige.config(text="Du hast verloren!")   
-                        return 
-                break
-        labelBot3.config(text=f"Bot3:\n{len(hand4)}")
-        if gelegt == False: #wenn er nicht legen konnte 
-            aufnehmen(2) #  nimmt er eine Karte auf
-            tkFenster.after(1000, zugbot3) #     und versucht wieder eine Karte zu legen
+                if len(hand4) == 0: #überprüft, ob der Bot noch Karten hat
+                    labelAnzeige.config(text="Bot 1 ist Fertig!") #Benachrichtigung für Spieler
+                    if len(hand3) == 0 and len(hand2) == 0: #überprüft, ob alle Bots gewonnen haben
+                        labelAnzeige.config(text="Du hast verloren!") #Benachrichtigung für Spieler
+                        return #stoppt Zug 
+                break #wenn eine Karte gelegt wurde ist der Zug zuende
+        labelBot3.config(text=f"Bot3:\n{len(hand4)}") #Anzeige für Spieler
+        if gelegt == False:                #wenn er nicht legen konnte 
+            aufnehmen(2)                   #nimmt er eine Karte auf
+            tkFenster.after(1000, zugbot3) #und versucht wieder eine Karte zu legen
         else:
-            labelBot3.config(text=f"Bot3:\n{len(hand4)}")
-            labelAnzeige.config(text="Du bist dran!")
+            labelAnzeige.config(text="Du bist dran!") #Der Spielr kommt dran
     
-    aufnahmestapelerstellen()
-    # Erzeugung des Fensters
+    ### Erzeugung des Fensters ###
     tkFenster = Tk()
     tkFenster.title("Letzte Karte")
     tkFenster.attributes("-fullscreen", True)
 
+    ### ermittelt Bidschirmmaße ###
     width = tkFenster.winfo_screenwidth()
     height = tkFenster.winfo_screenheight()
     #print(width)
     #print(height)
 
-    # Grafikobjekte
+    ###Grafikobjekte###
+    #Spielfeld
     canvas = Canvas(master=tkFenster, background=primary_color)
     canvas.place(width=width, height=height-250)
+    #Frame Hand
     framedeck = Frame(master=tkFenster, background=primary_color)
     framedeck.place(y=height-250, width=width, height=250)
-    #canvascards = Canvas(master=tkFenster, background=primary_color)
-    #canvascards.place(y=height-250, width=width, height=250)
-    button_quit = Button(master=tkFenster, text="X", bg="red", font=("Arial", 35), command=quit)#close button ≡
+    #Menu Button
+    button_quit = Button(master=tkFenster, text="X", bg="red", font=("Arial", 35), command=quit) #close button ≡
     button_quit.place(x=width-75, y=25, width=50, height=50)
+    #Anzeige Text
     labelAnzeige = Label(master=tkFenster, text=f"Du bist dran!", bg=primary_color, font=('Arial', 36), fg="black")
     labelAnzeige.place(x=0, y=height-350, width=width, height=100)
-    erstekarte()
+    #Aufnahmebutton
     button_aufnehmen = Button(master=tkFenster, text="aufnehmen", bg=secondary_color, font=("Arial", 20), fg=font_color_1, command=aufnehmen1)
     button_aufnehmen.place(x=(2*width/3)-75, y=(height/2)-125, width=150, height=250)
+    
+    ###Vorbereitung Spielfeld###
+    aufnahmestapelerstellen()
+    erstekarte()
     haende()
-    # Schaltfaechen
+
+    ###Keybinds###
     tkFenster.bind('<KeyPress- >', aufnehmen1e)
     tkFenster.bind('<KeyPress-1>', legen1)
     tkFenster.bind('<KeyPress-2>', legen2)
