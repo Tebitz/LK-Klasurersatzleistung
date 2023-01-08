@@ -5,7 +5,7 @@ from functions import textdatei
 #menu
 #aus txt bekommen
 #Bug: Bot nimmt 50 Karten auf
-#gewonnen = True
+#gewonnen = True //Bots spielen weiter, obwohl sie gewonnen haben
 #Buttons blockieren
 #Versatz gelegte Karten
 
@@ -60,9 +60,12 @@ def game(): #Gesammtfunktion die das Menu aufruft
     def haende():
         for i in range(kartenaufnehmen): #aufzunehmende Karten für Spielstart werden aufgenommen
             aufnehmen(1)
-            aufnehmen(2)
-            aufnehmen(3)
-            aufnehmen(4)
+            if spieler > 1:
+                aufnehmen(2)
+            if spieler > 2:
+                aufnehmen(3)
+            if spieler > 3:
+                aufnehmen(4)
 
     def aufnehmen1e(event): #Funktion für Tastendruck
         aufnehmen(1) #Befehl zur Aufnahme einer Karte wird weitergegeben
@@ -95,7 +98,7 @@ def game(): #Gesammtfunktion die das Menu aufruft
     def stapelerneuern():
         global nachziehstapel, ablagestapel
         nachziehstapel = ablagestapel[1:] #alle außer die oberste Karte des Ablagestapel werden kopiert
-        ablagestapel = ablagestapel[0] #und dann aus dem Ablagestapel entfernt
+        ablagestapel = [ablagestapel[0]] #und dann aus dem Ablagestapel entfernt
         print(f"Der Stapel wird erneuert:\n{nachziehstapel}\nübrig ist jetzt: {ablagestapel}")
 
     #weitergabe commands Tastendrucke:
@@ -136,7 +139,9 @@ def game(): #Gesammtfunktion die das Menu aufruft
                 labelAnzeige.config(text="Die Bots spielen!") #Benachrichtigung für Spieler
                 #Buttons werden gespeert
                 tkFenster.after(1000, zugbot1) #Weitergabe an Bots
-        else: labelAnzeige.config(text="Diese Karte kannst du nicht legen!")
+        else: 
+            labelAnzeige.config(text="Diese Karte kannst du nicht legen!")
+            print(f"Du kannst deine  {karte}. Karte {hand1[karte]} nicht legen!")
         #Benachrichtigung für Spieler, falls ungültiger Zug
 
     def ordnen():
@@ -154,7 +159,7 @@ def game(): #Gesammtfunktion die das Menu aufruft
             for i in range(len(hand1)): #Karten werden plaziert
                 #Sie sind Buttons, damit man sie durch einen Klick legen kann
                 if i == 0:  #Es müssen immer neue Buttons erstellt werden, da sonst der command überschrieben wird
-                    button_Karte1 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(0)) #command= lambda: legen(i)
+                    button_Karte1 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(0))
                     button_Karte1.place(x=x0, y=0, width=150, height=250)
                 elif i == 1:
                     button_Karte2 = Button(master=framedeck, text=hand1[i][1], bg=hand1[i][0], font=("Arial", 100), fg="black", command= lambda: legen(1))
@@ -276,7 +281,7 @@ def game(): #Gesammtfunktion die das Menu aufruft
                 labelBot2.config(text=f"Bot2:\n{len(hand3)}") #Anzeige für Spieler
                 break #wenn eine Karte gelegt wurde ist der Zug zuende
         if gelegt == False:                #wenn er nicht legen konnte 
-            aufnehmen(2)                   #nimmt er eine Karte auf
+            aufnehmen(3)                   #nimmt er eine Karte auf
             tkFenster.after(1000, zugbot2) #und versucht wieder eine Karte zu legen
             return
         else:
@@ -306,7 +311,7 @@ def game(): #Gesammtfunktion die das Menu aufruft
                 labelBot3.config(text=f"Bot3:\n{len(hand4)}") #Anzeige für Spieler
                 break #wenn eine Karte gelegt wurde ist der Zug zuende
         if gelegt == False:                #wenn er nicht legen konnte 
-            aufnehmen(2)                   #nimmt er eine Karte auf
+            aufnehmen(4)                   #nimmt er eine Karte auf
             tkFenster.after(1000, zugbot3) #und versucht wieder eine Karte zu legen
             return
         else:
