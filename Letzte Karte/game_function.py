@@ -1,8 +1,8 @@
+#Letzte Karte - Spiel von Amos
+
 from tkinter import *
 from random import randint
 from functions import textdatei
-
-#menu <> Auswertung?
 
 def back_to_menu(): #zurück zum Menü
         return(game_active)
@@ -350,7 +350,7 @@ def game(): #Gesammtfunktion die das Menu aufruft
 
     ###Grafikobjekte###
     #Spielfeld
-    canvas = Canvas(master=tkFenster, background=primary_color)
+    canvas = Canvas(master=tkFenster, background=primary_color, highlightthickness=0)
     canvas.place(width=width, height=height-250)
     #Frame Hand
     framedeck = Frame(master=tkFenster, background=primary_color)
@@ -397,5 +397,3 @@ def game(): #Gesammtfunktion die das Menu aufruft
     
     # Aktivierung der Ereignisschleife
     tkFenster.mainloop()
-
-#game()
