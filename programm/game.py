@@ -3,15 +3,13 @@ from random import randint
 from functions import textdatei
 
 #menu
-#aus txt bekommen
-#Bug: Bot nimmt 50 Karten auf
-#gewonnen = True //Bots spielen weiter, obwohl sie gewonnen haben
-#Buttons blockieren
-#Versatz gelegte Karten
+#Auswertung?
+#Versatz gelegte Karten + clear canvas
+#maximalekarten?
 
 def game(): #Gesammtfunktion die das Menu aufruft
     global hand1, hand2, hand3, hand4, ablagestapel, nachziehstapel
-    global labelBot1, labelBot2, labelBot3
+    global labelBot1, labelBot2, labelBot3, botsspielen, gewonnen
 
     #Listen
     hand1 = []
@@ -20,6 +18,8 @@ def game(): #Gesammtfunktion die das Menu aufruft
     hand4 = []
     ablagestapel = []
     nachziehstapel = []
+    botsspielen = False #gibt an ob Bots gerade am Zug sind
+    gewonnen = False
 
     #Variablen aus txt extrahiert:
     spieler = int(textdatei("number_of_bots", "null"))+1
@@ -75,24 +75,25 @@ def game(): #Gesammtfunktion die das Menu aufruft
     def aufnehmen(hand):
         global labelBot1, labelBot2, labelBot3
         global nachziehstapel, hand1, hand2, hand3, hand4
-        if len(nachziehstapel) == 0: #prüft ob noch Karten auf dem Stapel sind
-            stapelerneuern() #Im falle würde er den Stapel neu mischen
-        random = randint(0, len(nachziehstapel)-1) #eine zufällige Karte wird Ausgewählt
-        print(f"Die Karte {nachziehstapel[random]} wird von Spieler {hand} aufgenommen")
-        #Es wird geprüft, welcher Spieler aufnimmt
-        if hand == 1:
-            hand1 = hand1 + [nachziehstapel[random]] #Die ausgewählte Karte wird zur Liste hinzugefügt
-            ordnen()# Die Hand des Spielers wird neu geordnet
-        if hand == 2:
-            hand2 = hand2 + [nachziehstapel[random]]
-            labelBot1.config(text=f"Bot1:\n{len(hand2)}") #Anzeige für Spieler
-        if hand == 3:
-            hand3 = hand3 + [nachziehstapel[random]]
-            labelBot2.config(text=f"Bot2:\n{len(hand3)}") #Anzeige für Spieler
-        if hand == 4:
-            hand4 = hand4 + [nachziehstapel[random]]
-            labelBot3.config(text=f"Bot3:\n{len(hand4)}") #Anzeige für Spieler
-        nachziehstapel.pop(random) #Karte wird aus Nachziehstapel entfernt
+        if (botsspielen == False and gewonnen == False) or hand > 1: #Testet ob Spieler dran ist oder der Bot zug ausführt
+            if len(nachziehstapel) == 0: #prüft ob noch Karten auf dem Stapel sind
+                stapelerneuern() #Im falle würde er den Stapel neu mischen
+            random = randint(0, len(nachziehstapel)-1) #eine zufällige Karte wird Ausgewählt
+            print(f"Die Karte {nachziehstapel[random]} wird von Spieler {hand} aufgenommen")
+            #Es wird geprüft, welcher Spieler aufnimmt
+            if hand == 1:
+                hand1 = hand1 + [nachziehstapel[random]] #Die ausgewählte Karte wird zur Liste hinzugefügt
+                ordnen()# Die Hand des Spielers wird neu geordnet
+            if hand == 2:
+                hand2 = hand2 + [nachziehstapel[random]]
+                labelBot1.config(text=f"Bot1:\n{len(hand2)}") #Anzeige für Spieler
+            if hand == 3:
+                hand3 = hand3 + [nachziehstapel[random]]
+                labelBot2.config(text=f"Bot2:\n{len(hand3)}") #Anzeige für Spieler
+            if hand == 4:
+                hand4 = hand4 + [nachziehstapel[random]]
+                labelBot3.config(text=f"Bot3:\n{len(hand4)}") #Anzeige für Spieler
+            nachziehstapel.pop(random) #Karte wird aus Nachziehstapel entfernt
 
     #Wenn der Stapel leer ist werden die bereits gelegten karten wieder untergemischt:
     def stapelerneuern():
@@ -125,24 +126,26 @@ def game(): #Gesammtfunktion die das Menu aufruft
 
     #gewünschte karte legen (Spieler 1):
     def legen(karte): #Karte = (Index)
-        global ablagestapel, hand1
-        if ablagestapel[0][0] == hand1[karte][0] or ablagestapel[0][1] == hand1[karte][1]: #Überprüfen, ob Karte gelegt werden darf
-            print(f"die {karte}. Karte wurde gelegt: {hand1[karte]}")
-            ablagestapel = [hand1[karte]] + ablagestapel #Karte vorne auf den Ablagestapel
-            hand1.pop(karte) #Karte aus Hand gelöscht
-            #Karte wird in GUI plaziert
-            temp = width/2
-            canvas.create_rectangle(temp-75, (height/2)-125, temp+75, (height/2)+125, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert
-            canvas.create_text(temp, height/2, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert
-            ordnen() #Hand wird neu geordnet
-            if spieler > 1 and gewonnen == False: #Überprüfen, ob Bots dran sind
-                labelAnzeige.config(text="Die Bots spielen!") #Benachrichtigung für Spieler
-                #Buttons werden gespeert
-                tkFenster.after(1000, zugbot1) #Weitergabe an Bots
-        else: 
-            labelAnzeige.config(text="Diese Karte kannst du nicht legen!")
-            print(f"Du kannst deine  {karte}. Karte {hand1[karte]} nicht legen!")
-        #Benachrichtigung für Spieler, falls ungültiger Zug
+        global ablagestapel, hand1, botsspielen
+        if botsspielen == False: #Testet ob Spieler dran ist
+            if ablagestapel[0][0] == hand1[karte][0] or ablagestapel[0][1] == hand1[karte][1]: #Überprüfen, ob Karte gelegt werden darf
+                print(f"die {karte}. Karte wurde gelegt: {hand1[karte]}")
+                ablagestapel = [hand1[karte]] + ablagestapel #Karte vorne auf den Ablagestapel
+                hand1.pop(karte) #Karte aus Hand gelöscht
+                #Karte wird in GUI plaziert
+                tempx = randint(width/2-20, width/2+20) #Random Versatz für "Stapel-Look"
+                tempy = randint(height/2-30, height/2+30) 
+                canvas.create_rectangle(tempx-75, tempy-125, tempx+75, tempy+125, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert
+                canvas.create_text(tempx, tempy, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert
+                ordnen() #Hand wird neu geordnet
+                if spieler > 1 and gewonnen == False: #Überprüfen, ob Bots dran sind
+                    labelAnzeige.config(text="Die Bots spielen!") #Benachrichtigung für Spieler
+                    botsspielen = True #Buttons werden gespeert
+                    tkFenster.after(1000, zugbot1) #Weitergabe an Bots
+            else: 
+                labelAnzeige.config(text="Diese Karte kannst du nicht legen!")
+                print(f"Du kannst deine  {karte}. Karte {hand1[karte]} nicht legen!")
+            #Benachrichtigung für Spieler, falls ungültiger Zug
 
     def ordnen():
         global gewonnen 
@@ -229,93 +232,104 @@ def game(): #Gesammtfunktion die das Menu aufruft
 
     def zugbot1():
         print("Bot1:")
-        global ablagestapel, hand2
+        global ablagestapel, hand2, botsspielen
         gelegt = False
-        for i in range(len(hand2)): #versucht alle Karten zu legen
-            if ablagestapel[0][0] == hand2[i][0] or ablagestapel[0][1] == hand2[i][1]: #Überprüfen, ob Karte gelegt werden darf
-                print(f"der Bot 1 hat {hand2[i]} gelegt")
-                ablagestapel = [hand2[i]] + ablagestapel #Karte vorne auf den Ablagestapel
-                hand2.pop(i) #Karte aus Hand gelöscht
-                #Karte wird in GUI plaziert:
-                temp = width/2
-                canvas.create_rectangle(temp-75, (height/2)-125, temp+75, (height/2)+125, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert
-                canvas.create_text(temp, height/2, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert
-                labelBot1.config(text=f"Bot1:\n{len(hand2)}")
-                gelegt = True
-                if len(hand2) == 0: #überprüft, ob der Bot noch Karten hat
-                    labelAnzeige.config(text="Bot 1 ist Fertig!") #Benachrichtigung für Spieler
-                    if (len(hand3) == 0 and len(hand4) == 0) or spieler > 2: #überprüft, ob alle Bots gewonnen haben
-                        labelAnzeige.config(text="Du hast verloren!")  #Benachrichtigung für Spieler
-                        return #stoppt Zug
-                labelBot1.config(text=f"Bot1:\n{len(hand2)}") #Anzeige für Spieler
-                break #wenn eine Karte gelegt wurde ist der Zug zuende
-        if gelegt == False:                #wenn er nicht legen konnte 
-            aufnehmen(2)                   #nimmt er eine Karte auf
-            tkFenster.after(1000, zugbot1) #und versucht wieder eine Karte zu legen
+        if len(hand2) != 0:
+            for i in range(len(hand2)): #versucht alle Karten zu legen
+                if ablagestapel[0][0] == hand2[i][0] or ablagestapel[0][1] == hand2[i][1]: #Überprüfen, ob Karte gelegt werden darf
+                    print(f"der Bot 1 hat {hand2[i]} gelegt")
+                    ablagestapel = [hand2[i]] + ablagestapel #Karte vorne auf den Ablagestapel
+                    hand2.pop(i) #Karte aus Hand gelöscht
+                    #Karte wird in GUI plaziert:
+                    tempx = randint(width/2-20, width/2+20) #Random Versatz für "Stapel-Look"
+                    tempy = randint(height/2-30, height/2+30) 
+                    canvas.create_rectangle(tempx-75, tempy-125, tempx+75, tempy+125, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert
+                    canvas.create_text(tempx, tempy, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert 
+                    labelBot1.config(text=f"Bot1:\n{len(hand2)}")
+                    gelegt = True
+                    if len(hand2) == 0: #überprüft, ob der Bot noch Karten hat
+                        labelAnzeige.config(text="Bot 1 ist Fertig!") #Benachrichtigung für Spieler
+                        if (len(hand3) == 0 and len(hand4) == 0) or (len(hand3) == 0 and spieler > 3) or spieler > 2: #überprüft, ob alle Bots gewonnen haben
+                            labelAnzeige.config(text="Du hast verloren!")  #Benachrichtigung für Spieler
+                            return #stoppt Zug
+                    labelBot1.config(text=f"Bot1:\n{len(hand2)}") #Anzeige für Spieler
+                    break #wenn eine Karte gelegt wurde ist der Zug zuende
+        if gelegt == False and len(hand2) != 0: #wenn er nicht legen konnte und noch nicht Fertig ist
+            aufnehmen(2)                        #nimmt er eine Karte auf
+            tkFenster.after(1000, zugbot1)      #und versucht wieder eine Karte zu legen
             return
         else:
             if spieler > 2: #Abfrage ob Bot 2 auch Aktiv ist
                 tkFenster.after(1000, zugbot2) #weitergabe
-            else: labelAnzeige.config(text="Du bist dran!")
+            else: 
+                labelAnzeige.config(text="Du bist dran!")
+                botsspielen = False
                 #wenn nicht kommt der Spieler wieder dran
 
     def zugbot2():
         print("Bot2:")
-        global ablagestapel, hand3 
+        global ablagestapel, hand3, botsspielen
         gelegt = False
-        for i in range(len(hand3)): #versucht alle Karten zu legen
-            if ablagestapel[0][0] == hand3[i][0] or ablagestapel[0][1] == hand3[i][1]: #Überprüfen, ob Karte gelegt werden darf
-                print(f"der Bot 2 hat {hand3[i]} gelegt")
-                ablagestapel = [hand3[i]] + ablagestapel #Karte vorne auf den Ablagestapel
-                hand3.pop(i) #Karte aus Hand gelöscht
-                #Karte wird in GUI plaziert:
-                temp = width/2
-                canvas.create_rectangle(temp-75, (height/2)-125, temp+75, (height/2)+125, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert
-                canvas.create_text(temp, height/2, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert
-                gelegt = True
-                if len(hand3) == 0: #Kontrolliert ob Bot noch Karten hat
-                    labelAnzeige.config(text="Bot 2 ist Fertig!") #Benachrichtigung für Spieler
-                    if (len(hand2) == 0 and len(hand4) == 0) or (len(hand2) == 0 and spieler > 3): #überprüft, ob alle Bots gewonnen haben
-                        labelAnzeige.config(text="Du hast verloren!") #Benachrichtigung für Spieler
-                        return #stoppt Zug 
-                labelBot2.config(text=f"Bot2:\n{len(hand3)}") #Anzeige für Spieler
-                break #wenn eine Karte gelegt wurde ist der Zug zuende
-        if gelegt == False:                #wenn er nicht legen konnte 
-            aufnehmen(3)                   #nimmt er eine Karte auf
-            tkFenster.after(1000, zugbot2) #und versucht wieder eine Karte zu legen
+        if len(hand3) != 0:
+            for i in range(len(hand3)): #versucht alle Karten zu legen
+                if ablagestapel[0][0] == hand3[i][0] or ablagestapel[0][1] == hand3[i][1]: #Überprüfen, ob Karte gelegt werden darf
+                    print(f"der Bot 2 hat {hand3[i]} gelegt")
+                    ablagestapel = [hand3[i]] + ablagestapel #Karte vorne auf den Ablagestapel
+                    hand3.pop(i) #Karte aus Hand gelöscht
+                    #Karte wird in GUI plaziert:
+                    tempx = randint(width/2-20, width/2+20) #Random Versatz für "Stapel-Look"
+                    tempy = randint(height/2-30, height/2+30) 
+                    canvas.create_rectangle(tempx-75, tempy-125, tempx+75, tempy+125, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert
+                    canvas.create_text(tempx, tempy, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert 
+                    gelegt = True
+                    if len(hand3) == 0: #Kontrolliert ob Bot noch Karten hat
+                        labelAnzeige.config(text="Bot 2 ist Fertig!") #Benachrichtigung für Spieler
+                        if (len(hand2) == 0 and len(hand4) == 0) or (len(hand2) == 0 and spieler > 3): #überprüft, ob alle Bots gewonnen haben
+                            labelAnzeige.config(text="Du hast verloren!") #Benachrichtigung für Spieler
+                            return #stoppt Zug 
+                    labelBot2.config(text=f"Bot2:\n{len(hand3)}") #Anzeige für Spieler
+                    break #wenn eine Karte gelegt wurde ist der Zug zuende
+        if gelegt == False and len(hand3) != 0: #wenn er nicht legen konnte und noch nicht Fertig ist
+            aufnehmen(3)                        #nimmt er eine Karte auf
+            tkFenster.after(1000, zugbot2)      #und versucht wieder eine Karte zu legen
             return
         else:
             if spieler > 3: #Abfrage ob Bot 3 auch Aktiv ist
                 tkFenster.after(1000, zugbot3) #weitergabe
-            else: labelAnzeige.config(text="Du bist dran!") #wenn nicht kommt der Spieler wieder dran
+            else: 
+                labelAnzeige.config(text="Du bist dran!") #wenn nicht kommt der Spieler wieder dran
+                botsspielen = False
 
     def zugbot3():
         print("Bot3:")
-        global ablagestapel, hand4
+        global ablagestapel, hand4, botsspielen
         gelegt = False
-        for i in range(len(hand4)): #versucht alle Karten zu legen
-            if ablagestapel[0][0] == hand4[i][0] or ablagestapel[0][1] == hand4[i][1]: #Überprüfen, ob Karte gelegt werden darf
-                print(f"der Bot 3 hat {hand4[i]} gelegt")
-                ablagestapel = [hand4[i]] + ablagestapel #Karte vorne auf den Ablagestapel
-                hand4.pop(i) #Karte aus Hand gelöscht
-                #Karte wird in GUI plaziert:
-                temp = width/2
-                canvas.create_rectangle(temp-75, (height/2)-125, temp+75, (height/2)+125, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert
-                canvas.create_text(temp, height/2, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert
-                gelegt = True
-                if len(hand4) == 0: #überprüft, ob der Bot noch Karten hat
-                    labelAnzeige.config(text="Bot 1 ist Fertig!") #Benachrichtigung für Spieler
-                    if len(hand3) == 0 and len(hand2) == 0: #überprüft, ob alle Bots gewonnen haben
-                        labelAnzeige.config(text="Du hast verloren!") #Benachrichtigung für Spieler
-                        return #stoppt Zug 
-                labelBot3.config(text=f"Bot3:\n{len(hand4)}") #Anzeige für Spieler
-                break #wenn eine Karte gelegt wurde ist der Zug zuende
-        if gelegt == False:                #wenn er nicht legen konnte 
-            aufnehmen(4)                   #nimmt er eine Karte auf
-            tkFenster.after(1000, zugbot3) #und versucht wieder eine Karte zu legen
+        if len(hand4) != 0:
+            for i in range(len(hand4)): #versucht alle Karten zu legen
+                if ablagestapel[0][0] == hand4[i][0] or ablagestapel[0][1] == hand4[i][1]: #Überprüfen, ob Karte gelegt werden darf
+                    print(f"der Bot 3 hat {hand4[i]} gelegt")
+                    ablagestapel = [hand4[i]] + ablagestapel #Karte vorne auf den Ablagestapel
+                    hand4.pop(i) #Karte aus Hand gelöscht
+                    #Karte wird in GUI plaziert:
+                    tempx = randint(width/2-20, width/2+20) #Random Versatz für "Stapel-Look"
+                    tempy = randint(height/2-30, height/2+30) 
+                    canvas.create_rectangle(tempx-75, tempy-125, tempx+75, tempy+125, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert
+                    canvas.create_text(tempx, tempy, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert 
+                    gelegt = True
+                    if len(hand4) == 0: #überprüft, ob der Bot noch Karten hat
+                        labelAnzeige.config(text="Bot 1 ist Fertig!") #Benachrichtigung für Spieler
+                        if len(hand3) == 0 and len(hand2) == 0: #überprüft, ob alle Bots gewonnen haben
+                            labelAnzeige.config(text="Du hast verloren!") #Benachrichtigung für Spieler
+                            return #stoppt Zug 
+                    labelBot3.config(text=f"Bot3:\n{len(hand4)}") #Anzeige für Spieler
+                    break #wenn eine Karte gelegt wurde ist der Zug zuende
+        if gelegt == False and len(hand4) != 0: #wenn er nicht legen konnte und noch nicht Fertig ist
+            aufnehmen(4)                        #nimmt er eine Karte auf
+            tkFenster.after(1000, zugbot3)      #und versucht wieder eine Karte zu legen
             return
         else:
             labelAnzeige.config(text="Du bist dran!") #Der Spielr kommt dran
+            botsspielen = False
     
     #def quit(event):
     #    textdatei("game_active", "False")
