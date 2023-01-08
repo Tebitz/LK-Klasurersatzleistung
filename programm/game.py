@@ -76,6 +76,7 @@ def game(): #Gesammtfunktion die das Menu aufruft
         global labelBot1, labelBot2, labelBot3
         global nachziehstapel, hand1, hand2, hand3, hand4
         if (botsspielen == False and gewonnen == False) or hand > 1: #Testet ob Spieler dran ist oder der Bot zug ausführt
+            print(f"Der Stapel hat {len(nachziehstapel)} Karten")
             if len(nachziehstapel) == 0: #prüft ob noch Karten auf dem Stapel sind
                 stapelerneuern() #Im falle würde er den Stapel neu mischen
             random = randint(0, len(nachziehstapel)-1) #eine zufällige Karte wird Ausgewählt
@@ -101,6 +102,12 @@ def game(): #Gesammtfunktion die das Menu aufruft
         nachziehstapel = ablagestapel[1:] #alle außer die oberste Karte des Ablagestapel werden kopiert
         ablagestapel = [ablagestapel[0]] #und dann aus dem Ablagestapel entfernt
         print(f"Der Stapel wird erneuert:\n{nachziehstapel}\nübrig ist jetzt: {ablagestapel}")
+        canvas.delete("all") #Optischer Stapel wird entfernt
+        #übrige Karte wird in GUI plaziert:
+        tempx = randint(width/2-20, width/2+20) #Random Versatz für "Stapel-Look"
+        tempy = randint(height/2-30, height/2+30) 
+        canvas.create_rectangle(tempx-75, tempy-125, tempx+75, tempy+125, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert
+        canvas.create_text(tempx, tempy, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert 
 
     #weitergabe commands Tastendrucke:
     def legen1(event): 
@@ -231,7 +238,7 @@ def game(): #Gesammtfunktion die das Menu aufruft
             gewonnen = True
 
     def zugbot1():
-        print("Bot1:")
+        #print("Bot1:")
         global ablagestapel, hand2, botsspielen
         gelegt = False
         if len(hand2) != 0:
@@ -267,7 +274,7 @@ def game(): #Gesammtfunktion die das Menu aufruft
                 #wenn nicht kommt der Spieler wieder dran
 
     def zugbot2():
-        print("Bot2:")
+        #print("Bot2:")
         global ablagestapel, hand3, botsspielen
         gelegt = False
         if len(hand3) != 0:
@@ -301,7 +308,7 @@ def game(): #Gesammtfunktion die das Menu aufruft
                 botsspielen = False
 
     def zugbot3():
-        print("Bot3:")
+        #print("Bot3:")
         global ablagestapel, hand4, botsspielen
         gelegt = False
         if len(hand4) != 0:
@@ -336,8 +343,8 @@ def game(): #Gesammtfunktion die das Menu aufruft
 
     ### Erzeugung des Fensters ###
     tkFenster = Tk()
-    tkFenster.title("Letzte Karte")
-    tkFenster.attributes("-fullscreen", True)
+    tkFenster.title("Letzte Karte") #Name des Fensters
+    tkFenster.attributes("-fullscreen", True) #Fullscreen
 
     ### ermittelt Bidschirmmaße ###
     width = tkFenster.winfo_screenwidth()
