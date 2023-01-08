@@ -2,10 +2,7 @@ from tkinter import *
 from random import randint
 from functions import textdatei
 
-#menu
-#Auswertung?
-#Versatz gelegte Karten + clear canvas
-#maximalekarten?
+#menu <> Auswertung?
 
 def game(): #Gesammtfunktion die das Menu aufruft
     global hand1, hand2, hand3, hand4, ablagestapel, nachziehstapel
@@ -256,7 +253,7 @@ def game(): #Gesammtfunktion die das Menu aufruft
                     gelegt = True
                     if len(hand2) == 0: #überprüft, ob der Bot noch Karten hat
                         labelAnzeige.config(text="Bot 1 ist Fertig!") #Benachrichtigung für Spieler
-                        if (len(hand3) == 0 and len(hand4) == 0) or (len(hand3) == 0 and spieler > 3) or spieler > 2: #überprüft, ob alle Bots gewonnen haben
+                        if (len(hand3) == 0 and len(hand4) == 0) or (len(hand3) == 0 and spieler < 3) or spieler < 2: #überprüft, ob alle Bots gewonnen haben
                             labelAnzeige.config(text="Du hast verloren!")  #Benachrichtigung für Spieler
                             return #stoppt Zug
                     labelBot1.config(text=f"Bot1:\n{len(hand2)}") #Anzeige für Spieler
@@ -291,7 +288,7 @@ def game(): #Gesammtfunktion die das Menu aufruft
                     gelegt = True
                     if len(hand3) == 0: #Kontrolliert ob Bot noch Karten hat
                         labelAnzeige.config(text="Bot 2 ist Fertig!") #Benachrichtigung für Spieler
-                        if (len(hand2) == 0 and len(hand4) == 0) or (len(hand2) == 0 and spieler > 3): #überprüft, ob alle Bots gewonnen haben
+                        if (len(hand2) == 0 and len(hand4) == 0) or (len(hand2) == 0 and spieler < 3): #überprüft, ob alle Bots gewonnen haben
                             labelAnzeige.config(text="Du hast verloren!") #Benachrichtigung für Spieler
                             return #stoppt Zug 
                     labelBot2.config(text=f"Bot2:\n{len(hand3)}") #Anzeige für Spieler
