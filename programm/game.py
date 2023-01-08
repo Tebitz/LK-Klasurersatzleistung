@@ -46,7 +46,6 @@ def game(): #Gesammtfunktion die das Menu aufruft
             for y in range(len(zahlen)):
                 nachziehstapel = nachziehstapel + [[farben[i], zahlen[y]]] + [[farben[i], zahlen[y]]] 
                 #erstellt jede mögliche Karte 2 mal
-        print(f"Der Nachziehstapel wird erstellt: {nachziehstapel}")
 
     def erstekarte(): #eine erste Karte muss als Grundlage gelegt werden
         global nachziehstapel, ablagestapel
@@ -57,7 +56,6 @@ def game(): #Gesammtfunktion die das Menu aufruft
         temp = width/2
         canvas.create_rectangle(temp-75, (height/2)-125, temp+75, (height/2)+125, fill=ablagestapel[0][0]) #Hintergrund der Karte wird plaziert
         canvas.create_text(temp, height/2, font=("Arial", 100), text=ablagestapel[0][1], fill="black") #Vordergrund der Karte wird plaziert
-        print(f"Als Grundlage wurde die {random}. Karte wurde ausgewählt: {ablagestapel}")
 
     def haende():
         for i in range(kartenaufnehmen): #aufzunehmende Karten für Spielstart werden aufgenommen
@@ -78,11 +76,9 @@ def game(): #Gesammtfunktion die das Menu aufruft
         global labelBot1, labelBot2, labelBot3
         global nachziehstapel, hand1, hand2, hand3, hand4
         if (botsspielen == False and gewonnen == False) or hand > 1: #Testet ob Spieler dran ist oder der Bot zug ausführt
-            print(f"Der Stapel hat {len(nachziehstapel)} Karten")
             if len(nachziehstapel) == 0: #prüft ob noch Karten auf dem Stapel sind
                 stapelerneuern() #Im falle würde er den Stapel neu mischen
             random = randint(0, len(nachziehstapel)-1) #eine zufällige Karte wird Ausgewählt
-            print(f"Die Karte {nachziehstapel[random]} wird von Spieler {hand} aufgenommen")
             #Es wird geprüft, welcher Spieler aufnimmt
             if hand == 1:
                 hand1 = hand1 + [nachziehstapel[random]] #Die ausgewählte Karte wird zur Liste hinzugefügt
@@ -103,7 +99,6 @@ def game(): #Gesammtfunktion die das Menu aufruft
         global nachziehstapel, ablagestapel
         nachziehstapel = ablagestapel[1:] #alle außer die oberste Karte des Ablagestapel werden kopiert
         ablagestapel = [ablagestapel[0]] #und dann aus dem Ablagestapel entfernt
-        print(f"Der Stapel wird erneuert:\n{nachziehstapel}\nübrig ist jetzt: {ablagestapel}")
         canvas.delete("all") #Optischer Stapel wird entfernt
         #übrige Karte wird in GUI plaziert:
         tempx = randint(width/2-20, width/2+20) #Random Versatz für "Stapel-Look"
@@ -138,7 +133,6 @@ def game(): #Gesammtfunktion die das Menu aufruft
         global ablagestapel, hand1, botsspielen
         if botsspielen == False: #Testet ob Spieler dran ist
             if ablagestapel[0][0] == hand1[karte][0] or ablagestapel[0][1] == hand1[karte][1]: #Überprüfen, ob Karte gelegt werden darf
-                print(f"die {karte}. Karte wurde gelegt: {hand1[karte]}")
                 ablagestapel = [hand1[karte]] + ablagestapel #Karte vorne auf den Ablagestapel
                 hand1.pop(karte) #Karte aus Hand gelöscht
                 #Karte wird in GUI plaziert
@@ -153,7 +147,6 @@ def game(): #Gesammtfunktion die das Menu aufruft
                     tkFenster.after(1000, zugbot1) #Weitergabe an Bots
             else: 
                 labelAnzeige.config(text="Diese Karte kannst du nicht legen!")
-                print(f"Du kannst deine  {karte}. Karte {hand1[karte]} nicht legen!")
             #Benachrichtigung für Spieler, falls ungültiger Zug
 
     def ordnen():
@@ -162,7 +155,6 @@ def game(): #Gesammtfunktion die das Menu aufruft
         #neuer Frame wird für die Hand erstellt
         framedeck = Frame(master=tkFenster, background=primary_color)
         framedeck.place(y=height-250, width=width, height=250)
-        print(f"deine {len(hand1)} Karten werden neu sotiert")
         #Abstände werden neu berechnet:
         if len(hand1) > 0: 
             index = width / (len(hand1)) 
@@ -246,7 +238,6 @@ def game(): #Gesammtfunktion die das Menu aufruft
         if len(hand2) != 0:
             for i in range(len(hand2)): #versucht alle Karten zu legen
                 if ablagestapel[0][0] == hand2[i][0] or ablagestapel[0][1] == hand2[i][1]: #Überprüfen, ob Karte gelegt werden darf
-                    print(f"der Bot 1 hat {hand2[i]} gelegt")
                     ablagestapel = [hand2[i]] + ablagestapel #Karte vorne auf den Ablagestapel
                     hand2.pop(i) #Karte aus Hand gelöscht
                     #Karte wird in GUI plaziert:
@@ -282,7 +273,6 @@ def game(): #Gesammtfunktion die das Menu aufruft
         if len(hand3) != 0:
             for i in range(len(hand3)): #versucht alle Karten zu legen
                 if ablagestapel[0][0] == hand3[i][0] or ablagestapel[0][1] == hand3[i][1]: #Überprüfen, ob Karte gelegt werden darf
-                    print(f"der Bot 2 hat {hand3[i]} gelegt")
                     ablagestapel = [hand3[i]] + ablagestapel #Karte vorne auf den Ablagestapel
                     hand3.pop(i) #Karte aus Hand gelöscht
                     #Karte wird in GUI plaziert:
@@ -316,7 +306,6 @@ def game(): #Gesammtfunktion die das Menu aufruft
         if len(hand4) != 0:
             for i in range(len(hand4)): #versucht alle Karten zu legen
                 if ablagestapel[0][0] == hand4[i][0] or ablagestapel[0][1] == hand4[i][1]: #Überprüfen, ob Karte gelegt werden darf
-                    print(f"der Bot 3 hat {hand4[i]} gelegt")
                     ablagestapel = [hand4[i]] + ablagestapel #Karte vorne auf den Ablagestapel
                     hand4.pop(i) #Karte aus Hand gelöscht
                     #Karte wird in GUI plaziert:
