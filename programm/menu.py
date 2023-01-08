@@ -1,9 +1,9 @@
-# "Letzte Karte" Menu von Amos
+# "Letzte Karte"-Menu von Amos
 from game import game, back_to_menu
 from functions import textdatei, cards_check
 from tkinter import *
 
-#Erstellt Tk-Fenster
+#Erstellt Tkinter-Fenster
 def tk_menu():
     global width, height, menu
 
@@ -19,9 +19,8 @@ def tk_menu():
     #Failsafe für den Fall dass das Programm in einer Schleife steckt, oder sonst irgendwie buggt.
     menu.bind('<KeyPress-End>', quit)
 
-    #menu.after(5000, close)
+    #menu.after(5000, close) #macht das bearbeiten um einiges angehnemer
     mainmenu()  #ruft Startseite auf
-
     menu.mainloop()
 
 #Startseite
@@ -57,58 +56,63 @@ def settings():
         #Erstellt ein Label zum anzeigen der aktuellen Anzahl an Bots, welche aus der txt ausgelesen wird.
         number_of_bots = Label(mitte, text="Anzahl der Bots: " + str(textdatei("number_of_bots", "null")), fg=textdatei("font_color_1", "null"), bg=textdatei("primary_color", "null"), font=(textdatei("font_1", "null"), textdatei("font_size_text", "null")))
         number_of_bots.grid(row=1, column=0, padx=10, pady=(width/100), sticky="nesw")
+
         #trägt die aktuelle Anzahl an Bots -1 in die txt ein und ruft die Funktion gameplay zum aktalisieren der Label und Buttons auf.
         nob_decr = Button(mitte, text="-", width=2, bg=textdatei("primary_color", "null"), font=(textdatei("font_1", "null"), textdatei("font_size_text", "null")), command=lambda: [textdatei("number_of_bots", int(textdatei("number_of_bots", "null"))-1), gameplay()])
         nob_decr.grid(row=1, column=1, padx=width/16, pady=(width/100), sticky="w")
         #Prüft die aktuelle Anzahl der Bots und deaktiviert den Button, wenn diese nicht weiter verringert werden darf.
         if textdatei("number_of_bots", "null") == "1":
             nob_decr.config(state="disabled")
+        
         #trägt die aktuelle Anzahl an Bots +1 in die txt ein und ruft die Funktion gameplay zum aktalisieren der Label und Buttons auf.
         nob_incr = Button(mitte, text="+", width=2, bg=textdatei("primary_color", "null"), font=(textdatei("font_1", "null"), textdatei("font_size_text", "null")), command=lambda: [textdatei("number_of_bots", int(textdatei("number_of_bots", "null"))+1), gameplay()])
         nob_incr.grid(row=1, column=1, padx=width/16, pady=(width/100), sticky="e")
-        #Prüft in Funktion ob die Verteilung der Karten aufgeht wenn der Button betätigt wird (die Anzahl der Bots erhöht wird), sowie die aktuelle Anzahl der Bots und deaktiviert den button entsprechend.
+        #Prüft in cards_check-Funktion ob die Verteilung der Karten aufgeht wenn der Button betätigt wird (die Anzahl der Bots erhöht wird), sowie die aktuelle Anzahl der Bots und deaktiviert den button entsprechend.
         if cards_check("number_of_bots") == "False" or textdatei("number_of_bots", "null") == "3":
             nob_incr.config(state="disabled")
         
+
         #Erstellt ein Label zum anzeigen der aktuellen Anzahl an Karten die Spieler und Bots zu beginn auf der Hand haben, welche aus der txt ausgelesen wird.
         number_of_cards = Label(mitte, text="Karten zu Beginn: " + str(textdatei("number_of_cards", "null")), fg=textdatei("font_color_1", "null"), bg=textdatei("primary_color", "null"), font=(textdatei("font_1", "null"), textdatei("font_size_text", "null")))
         number_of_cards.grid(row=2, column=0, padx=10, pady=(width/100), sticky="nesw")
+
         #trägt die aktuelle Anzahl an Karten -1 in die txt ein und ruft die Funktion gameplay zum aktalisieren der Label und Buttons auf.
         noc_decr = Button(mitte, text="-", width=2, bg=textdatei("primary_color", "null"), font=(textdatei("font_1", "null"), textdatei("font_size_text", "null")), command=lambda: [textdatei("number_of_cards", int(textdatei("number_of_cards", "null"))-1), gameplay()])
         noc_decr.grid(row=2, column=1, padx=width/16, pady=(width/100), sticky="w")
+
         #Prüft die aktuelle Anzahl der Karten und deaktiviert den Button, wenn diese nicht weiter verringert werden darf.
         if textdatei("number_of_cards", "null") == "1":
             noc_decr.config(state="disabled")
+
         #trägt die aktuelle Anzahl an Karten +1 in die txt ein und ruft die Funktion gameplay zum aktalisieren der Label und Buttons auf.
         noc_incr = Button(mitte, text="+", width=2, bg=textdatei("primary_color", "null"), font=(textdatei("font_1", "null"), textdatei("font_size_text", "null")), command=lambda: [textdatei("number_of_cards", int(textdatei("number_of_cards", "null"))+1), gameplay()])
         noc_incr.grid(row=2, column=1, padx=width/16, pady=(width/100), sticky="e")
-        #Prüft in Funktion ob die Verteilung der Karten aufgeht wenn der Button betätigt wird (die Anzahl der Karten erhöht wird), sowie die aktuelle Anzahl der Karten und deaktiviert den button entsprechend.
+
+        #Prüft in cards_check-Funktion ob die Verteilung der Karten aufgeht wenn der Button betätigt wird (die Anzahl der Karten erhöht wird), sowie die aktuelle Anzahl der Karten und deaktiviert den button entsprechend.
         if cards_check("number_of_cards") == "False" or textdatei("number_of_cards", "null") == "12":
             noc_incr.config(state="disabled")
+
 
         #Erstellt ein Label zum anzeigen der aktuellen Anzahl an Farben mit denen gespielt wird, welche aus der txt ausgelesen wird.
         colors = Label(mitte, text="Anzahl der Farben:  " + str(textdatei("colors", "null")), fg=textdatei("font_color_1", "null"), bg=textdatei("primary_color", "null"), font=(textdatei("font_1", "null"), textdatei("font_size_text", "null")))
         colors.grid(row=3, column=0, padx=10, pady=(width/100), sticky="nesw")
+
         #trägt die aktuelle Anzahl an Farben -1 in die txt ein und ruft die Funktion gameplay zum aktalisieren der Label und Buttons auf.
         clr_decr = Button(mitte, text="-", width=2, bg=textdatei("primary_color", "null"), font=(textdatei("font_1", "null"), textdatei("font_size_text", "null")), command=lambda: [textdatei("colors", int(textdatei("colors", "null"))-1), gameplay()])
         clr_decr.grid(row=3, column=1, padx=width/16, pady=(width/100), sticky="w")
+
         #Prüft in Funktion ob die Verteilung der Karten aufgeht wenn der Button betätigt wird (die Anzahl der Farben und damit die anzahl der Karten im Spiel verringert wird), sowie die aktuelle Anzahl der Farben und deaktiviert den button entsprechend.
         if cards_check("colors") == "False" or textdatei("colors", "null") == "3":
             clr_decr.config(state="disabled")
+
         #trägt die aktuelle Anzahl an Farben +1 in die txt ein und ruft die Funktion gameplay zum aktalisieren der Label und Buttons auf.
         clr_incr = Button(mitte, text="+", width=2, bg=textdatei("primary_color", "null"), font=(textdatei("font_1", "null"), textdatei("font_size_text", "null")), command=lambda: [textdatei("colors", int(textdatei("colors", "null"))+1), gameplay()])
         clr_incr.grid(row=3, column=1, padx=width/16, pady=(width/100), sticky="e")
+
         #Prüft die aktuelle Anzahl der Karten und deaktiviert den Button, wenn diese nicht weiter erhöht werden darf.
         if textdatei("colors", "null") == "5":
             clr_incr.config(state="disabled")
         
-        #specialcards = Label(mitte, text="Sonderkarten", fg=textdatei("font_color_1", "null"), background=textdatei("color_3", "null"), font=(textdatei("font_1", "null"), textdatei("font_size_text", "null")))
-        #specialcards.grid(row=3, column=0, padx=10, pady=10, sticky="nesw")
-        #spcards = StringVar(value=textdatei("special_cards", "null"))
-        #print(spcards)
-        #specialcards_checkbutton = Checkbutton(mitte, anchor="center", width=2, offvalue="False", onvalue="True", variable=spcards, command=lambda: [textdatei("special_cards", spcards), settings()])
-        #specialcards_checkbutton.grid(row=3, column=1, padx=10, pady=10, sticky="nesw")
-
     
     def keybinds(): #Konfiguriert den Abschnitt Keybinds in den Einstellungen.
         #trägt den in die Entry-Felder eingetragenen inhalt in die txt um ihn zu speichen.
@@ -228,7 +232,7 @@ def settings():
     canvas.place(width=width, height=height)
     
     #Erstellt einen zweiten Canvas zur Farblichen gestaltung
-    mitte = Canvas(menu, background="grey") #textdatei("primary_color", "null"))
+    mitte = Canvas(menu, background=textdatei("primary_color", "null"))
     mitte.place(x=0, y=height/8, width=width, height=height-(height/4))
     
     #Erstellt das Label SETTINGS
