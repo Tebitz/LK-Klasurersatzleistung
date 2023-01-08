@@ -29,6 +29,26 @@ def mainmenu():
     canvas = Canvas(master=menu, background=textdatei("primary_color", "null"))
     canvas.place(width=width, height=height)
 
+    #Titel
+    title = Label(menu, text="Letzte Karte", fg=textdatei("font_color_1", "null"), background=textdatei("secondary_color", "null"), font=(textdatei("font_1", "null"), 40))
+    title.place(x=width/4, y=height/16, width=width/2)
+
+    #Regeln
+    rules = Label(canvas, text="Wie Funktioniert Letzte Karte?", fg=textdatei("font_color_1", "null"), bg=textdatei("primary_color", "null"), font=(textdatei("font_1", "null"), textdatei("font_size_subtitle", "null")))
+    rules.place(x=width/4, y=(height/6), width=width/2)
+
+    #Label für Spielregeln
+    rules_text = Label(canvas, text="""Die Regeln sind Simple af.
+    Dein Ziel ist es als erster alle deine Karten los zu werden.
+    Jede Runde kannst du eine passende Karte aus deiner Hand ablegen.
+    Eine ist passend, wenn sie die gleiche Farbe oder die gleiche Zahl
+    wie die oberste Karte auf dem Ablagestapel hat. Wenn du keine passende 
+    Karte hast, musst du solange vom Ablagestapel ziehen, bist du eine
+    passesnde Karte gezogen hast. Wenn du gelegt hast sind reiherum alle 
+    Bots an der Reihe.
+    In den Setting kannst du Aspekte des Spiels anpassen.""", fg=textdatei("font_color_1", "null"), bg=textdatei("primary_color", "null"), font=(textdatei("font_1", "null"), textdatei("font_size_text", "null")))
+    rules_text.place(x=(width/4), y=height/5, width=(width/2))
+
     #Button zum starten des Spiels
     button_play = Button(master=menu, text="Play", bg=textdatei("secondary_color", "null"), font=(textdatei("font_1", "null"), textdatei("font_size_text", "null")), command=play)
     button_play.place(x=(width/2)-100, y=(height/2)-75, width=200, height=50)
