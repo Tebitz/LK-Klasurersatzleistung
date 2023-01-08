@@ -1,5 +1,5 @@
 # "Letzte Karte"-Menu von Amos
-from game import game, back_to_menu
+from game_function import game, back_to_menu
 from functions import textdatei, cards_check
 from tkinter import *
 
@@ -26,7 +26,7 @@ def tk_menu():
 #Startseite
 def mainmenu():
     #Canvas wird für Startseite Kofiguriert
-    canvas = Canvas(master=menu, background=textdatei("primary_color", "null"))
+    canvas = Canvas(master=menu, background=textdatei("primary_color", "null"), highlightthickness=0)
     canvas.place(width=width, height=height)
 
     #Titel
@@ -67,7 +67,7 @@ def play(): #weiterleitung zum Spiel(schließt menufenster)
     #fragt so lange back_to_menu-Funktion ab, bis diese False ausgibt.
     while back_to_menu() == True:
         pass
-    #sobald dass der Fall ist (das Spiel wurde geschlossen), wird die Startseite aufgerufen
+    #sobald dass der Fall ist (das Spiel wurde geschlossen), wird die Startseite aufgerufen.
     tk_menu()
             
 #Einstellungen
@@ -248,11 +248,11 @@ def settings():
     menu.title("Settings")#Ändert den Title der Seite.
 
     #Konfiguriert den Canvas für die Einstellungen um.
-    canvas = Canvas(menu, background=textdatei("secondary_color", "null"))
+    canvas = Canvas(menu, background=textdatei("secondary_color", "null"), highlightthickness=0)
     canvas.place(width=width, height=height)
     
     #Erstellt einen zweiten Canvas zur Farblichen gestaltung
-    mitte = Canvas(menu, background=textdatei("primary_color", "null"))
+    mitte = Canvas(menu, background=textdatei("primary_color", "null"), highlightthickness=0)
     mitte.place(x=0, y=height/8, width=width, height=height-(height/4))
     
     #Erstellt das Label SETTINGS
