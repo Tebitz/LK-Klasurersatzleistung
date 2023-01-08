@@ -367,7 +367,7 @@ def game(): #Gesammtfunktion die das Menu aufruft
     framedeck = Frame(master=tkFenster, background=primary_color)
     framedeck.place(y=height-250, width=width, height=250)
     #Menu Button
-    button_quit = Button(master=tkFenster, text="X", bg="red", font=("Arial", 35), command=quit) #close button ≡
+    button_quit = Button(master=tkFenster, text="X", bg="red", font=("Arial", 35), command=close) #close button
     button_quit.place(x=width-75, y=25, width=50, height=50)
     #Anzeige Bots
     #Anzeige zur Anzahl der Karten für Bots werden bei Bedarf erstellt
@@ -409,4 +409,4 @@ def game(): #Gesammtfunktion die das Menu aufruft
     # Aktivierung der Ereignisschleife
     tkFenster.mainloop()
 
-game()
+#game()
