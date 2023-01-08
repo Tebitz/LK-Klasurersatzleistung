@@ -1,9 +1,9 @@
+game_active         False
 number_of_bots      3
 number_of_cards     8
 colors              4
-cards_in_total      56
-special_cards       True
-primary_color       blue
+special_cards       False
+primary_color       grey
 secondary_color     darkgreen
 color_3             white
 font_1              arial
@@ -11,7 +11,7 @@ font_size_title     30
 font_size_subtitle  20
 font_size_text      15
 font_color_1        black
-kb_take             <KeyPress->
+kb_take             <KeyPress-space>
 kb_place_card_1     <KeyPress-1>
 kb_place_card_2     <KeyPress-2>
 kb_place_card_3     <KeyPress-3>
