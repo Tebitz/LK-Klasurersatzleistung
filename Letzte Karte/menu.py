@@ -19,7 +19,7 @@ def tk_menu():
     #Failsafe für den Fall dass das Programm in einer Schleife steckt, oder sonst irgendwie buggt.
     menu.bind('<KeyPress-End>', quit)
 
-    #menu.after(5000, close) #macht das bearbeiten um einiges angehnemer
+    #menu.after(5000, close) #macht das bearbeiten um einiges angehnemer.
     mainmenu()  #ruft Startseite auf
     menu.mainloop()
 
