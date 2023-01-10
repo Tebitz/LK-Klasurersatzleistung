@@ -2,7 +2,7 @@
 #diese Funktion ist die einzige Schnittstelle zur txt, sie liest diese aus und gibt bestimmte Werte zurück, oder berarbeitet sie.
 def textdatei(parameter, value): #parameter = was gesucht wird ("number_of_cards"), value = in was der Wert geändert werden soll, beim auslesen value = "null".
     #Speichern des inhalts der txt als einzelnen String.
-    text = open("C:\Informatik\TKInter\LK-Klasurersatzleistung\programm\settings.txt", "r") #Die txt wird im Lesemodus geöffnet
+    text = open("C:\Informatik\TKInter\LK-Klasurersatzleistung\Letzte_Karte_Thilo_Spezial\settings.txt", "r") #Die txt wird im Lesemodus geöffnet
     data = text.read()
     text.close()
     data = data.split() #Erstellt eine Liste in der jede zusammenhängende zeichenkette ein Listenelement ist.
@@ -19,7 +19,7 @@ def textdatei(parameter, value): #parameter = was gesucht wird ("number_of_cards
                 break
         i = i + 2 #+2 weil er nur die Namen unter denen die Werte in der txt gespeichert sind abrufen soll/muss, nicht die Werte selbst.
     data[i] = str(value) #der mitgegebene Wert wird zum String und ersetzt das zuvor ermittelte Listenelement.
-    text = open("C:\Informatik\TKInter\LK-Klasurersatzleistung\programm\settings.txt", "w") #Die txt wird erneut geöffnet, diesmal im schreibmodus. Der Inhalt wird Vollständig überschrieben.
+    text = open("C:\Informatik\TKInter\LK-Klasurersatzleistung\Letzte_Karte_Thilo_Spezial\settings.txt", "w") #Die txt wird erneut geöffnet, diesmal im schreibmodus. Der Inhalt wird Vollständig überschrieben.
     #Die veränderte Liste wird Element für Element in die leere txt eingetragen.
     for i in range(len(data)):
         text.write(data[i] + "\n") #Nach jedem Element wird ein Zeilenumbruch eingefügt.
